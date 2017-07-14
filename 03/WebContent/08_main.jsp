@@ -7,10 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-input, age<br>
-<form action="JSP_Test_forwardTest.jsp">
-	<input type="text" name="age">
-	<input type="submit" name="입장">
-</form>
+<h3> 프론트 페이지 </h3>
+<a href="08_sub.jsp"> 서브 페이지로 이동하기</a><br>
+<%@ include file="footer.jsp" %>
 </body>
 </html>
