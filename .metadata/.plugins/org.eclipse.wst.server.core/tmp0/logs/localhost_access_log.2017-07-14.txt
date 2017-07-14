@@ -1,0 +1,6 @@
+127.0.0.1 - - [14/Jul/2017:11:44:05 +0900] "GET / HTTP/1.1" 404 951
+0:0:0:0:0:0:0:1 - - [14/Jul/2017:11:44:07 +0900] "GET /JSP_Test/JSP_Test_forwardForm.jsp HTTP/1.1" 200 396
+0:0:0:0:0:0:0:1 - - [14/Jul/2017:11:44:10 +0900] "GET /JSP_Test/JSP_Test_forwardTest.jsp?age=12&%EC%9E%85%EC%9E%A5=%EC%BF%BC%EB%A6%AC+%EC%A0%84%EC%86%A1 HTTP/1.1" 200 358
+0:0:0:0:0:0:0:1 - - [14/Jul/2017:11:44:28 +0900] "GET /JSP_Test/JSP_Test_forwardForm.jsp HTTP/1.1" 200 396
+0:0:0:0:0:0:0:1 - - [14/Jul/2017:11:44:31 +0900] "GET /JSP_Test/JSP_Test_forwardTest.jsp?age=12&%EC%9E%85%EC%9E%A5=%EC%BF%BC%EB%A6%AC+%EC%A0%84%EC%86%A1 HTTP/1.1" 200 358
+0:0:0:0:0:0:0:1 - - [14/Jul/2017:11:44:42 +0900] "GET /JSP_Test/JSP_Test_forwardTest.jsp?age=22&%EC%9E%85%EC%9E%A5=%EC%BF%BC%EB%A6%AC+%EC%A0%84%EC%86%A1 HTTP/1.1" 200 328
