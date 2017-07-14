@@ -1,0 +1,43 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+	.t1{
+		width:150px;
+		float:left;
+	}
+</style>
+</head>
+<body>
+	<div class="t1">
+		<label>이름 : </label><br>
+		<label>주민 : </label><br>
+		<label>아디 : </label><br>
+		<label>비번 : </label><br>
+		<label>비번확인 : </label><br>
+		<label>이메일 : </label><br>
+		<label>우편번호: </label><br>
+		<label>주소 : </label><br>
+		<label>폰번 : </label><br>
+	</div>
+	<div>
+		<input type="text" name="name"><br>
+		<input type="text" name="jumin">-<input type="password" name="jumin2"><br>
+		<input type="text" name="id"><br>
+		<input type="password" name="pw"><br>
+		<input type="password" name="pw2"><br>
+		<input type="text" name="mail">-<input type="text" name="mail2">
+		<select size="1">
+			<option value="">선택</option>
+			<option value="">선택</option>
+			<option value="">선택</option>
+			<option value="">선택</option>
+		</select>
+		<br>
+	</div>
+</body>
+</html>
