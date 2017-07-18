@@ -1,0 +1,10 @@
+package com.test.six;
+
+public class MemberBean {
+	private String name;
+	private String userid;
+	private String nickname;
+	private String pw;
+	private String email;
+	private String phone;
+}
