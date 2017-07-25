@@ -1,9 +1,0 @@
-package com.test.one;
-
-public class boardBean {
-	private String name;
-	private String pass;
-	private String email;
-	private String title;
-	private String content;
-}
