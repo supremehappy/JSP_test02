@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;test.LoginChecekFilter&apos; to &apos;LoginCheckFilter&apos;&#x0D;&#x0A;- Original project: &apos;filterTest&apos;&#x0D;&#x0A;- Original element: &apos;test.LoginChecekFilter&apos;&#x0D;&#x0A;- Renamed element: &apos;test.LoginCheckFilter&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;LoginChecekFilter&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;test{LoginChecekFilter.java[LoginChecekFilter" matchStrategy="1" name="LoginCheckFilter" qualified="false" references="true" similarDeclarations="false" stamp="1501054245365" textual="false" version="1.0"/>
+</session>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h3 align="center">게시판 글쓰기</h3>
+<form action="bbs-post" method="post">
+<h4>글 제 목 : <input type="text" name="TITLE"></h4>
+<textarea cols="80" rows="5" name="CONTENT"></textarea><br/>
+<input type="submit" value="글올리기"/>
+<input type="reset" value="취 소"/>
+</form>
+</body>
+</html>

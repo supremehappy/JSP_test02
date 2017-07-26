@@ -94,19 +94,17 @@
 					Note: The pattern used is equivalent to using pattern="common" -->
 				<Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log." suffix=".txt"/>
 
-				<Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\JSP_Test" path="/JSP_Test" reloadable="true" source="org.eclipse.jst.jee.server:JSP_Test"/>
-				<Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\test" path="/jsp-self-study" reloadable="true" source="org.eclipse.jst.jee.server:test"/>
-				<Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\05" path="/05" reloadable="true" source="org.eclipse.jst.jee.server:05"/>
-				<Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\02" path="/02" reloadable="true" source="org.eclipse.jst.jee.server:02"/>
-				<Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\03" path="/03" reloadable="true" source="org.eclipse.jst.jee.server:03"/>
-				<Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\04" path="/04" reloadable="true" source="org.eclipse.jst.jee.server:04"/>
-				<Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\06" path="/06" reloadable="true" source="org.eclipse.jst.jee.server:06"/>
-				<Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\07" path="/07" reloadable="true" source="org.eclipse.jst.jee.server:07"/>
-				<Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\08" path="/08" reloadable="true" source="org.eclipse.jst.jee.server:08"/>
-				<Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\09" path="/09" reloadable="true" source="org.eclipse.jst.jee.server:09">
-					<Resource auth="Container" driverClassName="oracle.jdbc.OracleDriver" maxIdle="10" maxTotal="20" maxWaitMillis="-1" name="jdbc/myoracle" password="1234" type="javax.sql.DataSource" url="jdbc:oracle:thin:@127.0.0.1:1521:orcl" username="hr"/>
-				</Context>
-				<Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\test01" path="/test01" reloadable="true" source="org.eclipse.jst.jee.server:test01"/></Host>
+				
+				<Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\test" path="/jsp-self-study" reloadable="true" source="org.eclipse.jst.jee.server:test"/>
+				
+				
+				
+				
+				
+				
+				
+				
+				<Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\test01" path="/test01" reloadable="true" source="org.eclipse.jst.jee.server:test01"/><Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Myhome" path="/Myhome" reloadable="true" source="org.eclipse.jst.jee.server:Myhome"/><Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\filterTest" path="/filterTest" reloadable="true" source="org.eclipse.jst.jee.server:filterTest"/></Host>
 		</Engine>
 	</Service>
 </Server>

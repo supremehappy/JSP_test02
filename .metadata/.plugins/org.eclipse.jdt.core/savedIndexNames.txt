@@ -1,19 +1,9 @@
 INDEX VERSION 1.130+C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.jdt.core
-3231295217.index
-447000637.index
-4246510906.index
-553597475.index
-2317069740.index
-1679150208.index
-1383499313.index
-936105216.index
-3271193799.index
-320011286.index
-1854870653.index
-2373347765.index
-479335008.index
-1839431851.index
-4201732387.index
-4197833168.index
-974280079.index
 1854214703.index
+3231295217.index
+1854870653.index
+479335008.index
+3387067706.index
+677109603.index
+3271193799.index
+2580299889.index
