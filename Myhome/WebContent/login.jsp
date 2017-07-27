@@ -18,6 +18,15 @@
 		</form>
 	</c:when>
 	
+	<c:when test="${param.UPLOAD2 != null }">
+		<h2>plz, login</h2>
+		<form action="login" method="post">
+			아디 : <input type="text" name="id" size="12" /><br>
+			비번 : <input type="password" name="pw" size="12" /><br>
+			<input type="submit" value="send"/>
+		</form>
+	</c:when>
+	
 	<c:otherwise>
 		<form action="login" method="post">
 			아디 : <input type="text" name="id" size="12" /><br>

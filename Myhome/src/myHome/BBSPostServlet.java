@@ -77,7 +77,8 @@ public class BBSPostServlet extends HttpServlet {
 		}finally{
 			try{stmt.close(); conn.close();}catch(Exception e){}
 		}
-		System.out.println("ok! success");
+		
+		response.sendRedirect("bbs-list");
 	}
 
 }

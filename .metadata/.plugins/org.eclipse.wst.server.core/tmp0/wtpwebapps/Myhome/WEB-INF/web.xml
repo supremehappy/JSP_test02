@@ -25,4 +25,12 @@
     <filter-name>loginCheck</filter-name>
     <url-pattern>/bbs-post</url-pattern>
   </filter-mapping>
+  <filter>
+  	<filter-name>loginCheck2</filter-name>
+  	<filter-class>myHome.LoginCheckFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>loginCheck2</filter-name>
+  	<url-pattern>/pro-post</url-pattern>
+  </filter-mapping>
 </web-app>

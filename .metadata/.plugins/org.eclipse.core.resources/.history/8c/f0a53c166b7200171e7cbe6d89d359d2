@@ -1,0 +1,27 @@
+package myHome;
+
+import java.util.ArrayList;
+
+public class BBSList {
+
+		private ArrayList<Integer> seqNoList = new ArrayList<Integer>();
+		private ArrayList<String> titleList = new ArrayList<String>();
+		private ArrayList<String> writerList = new ArrayList<String>();
+		private ArrayList<String> dateList = new ArrayList<String>();
+		
+		public void setSeqNoList(int index, Integer seqNo){
+			seqNoList.add(index, seqNo);
+		}
+		
+		public void setTitleList(int index, String title){
+			titleList.add(index, title);
+		}
+		
+		public void setWriterList(int index, String writer){
+			writerList.add(index, writer);
+		}
+		
+		public void setDateList(int index, String date){
+			dateList.add(index, date);
+		}
+}

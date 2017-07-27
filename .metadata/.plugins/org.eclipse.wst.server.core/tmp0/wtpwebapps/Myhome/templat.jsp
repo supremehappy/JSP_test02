@@ -24,9 +24,9 @@
 			
 			<a href="templat.jsp?BODY=intro.html">소개</a><br>
 			<a href="templat.jsp?BODY=bbsInput.html">게시판 글쓰기</a><br>
-			<a href="">게시판 읽기</a><br>
-			<a href="">상품 등록</a><br>
-			<a href="">상품 목록</a><br>
+			<a href="bbs-list">게시판 읽기</a><br>
+			<a href="templat.jsp?BODY=productInput.html">상품 등록</a><br>
+			<a href="pro-list">상품 목록</a><br>
 			<a href="">장바구니</a><br>
 		</td>
 		<td width="650" valign="top">

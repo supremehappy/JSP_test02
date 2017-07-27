@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<item value="0" key="CommitDialog.location.y"/>
+	<item value="130" key="passwordStores.location.y"/>
 	<item value="0" key="CommitDialog.location.x"/>
-	<item value="" key="DirectorySelectionPage.lastParent_http://wt/svn/test"/>
-	<item value="235" key="UpdateDialogWithConflictHandling.location.x"/>
+	<item value="0" key="passwordStores.location.x"/>
 	<item value="500" key="CommitDialog.weights.0"/>
 	<item value="500" key="CommitDialog.weights.1"/>
 	<item value="36" key="UpdateDialogWithConflictHandling.location.y"/>
 	<item value="727" key="UpdateDialogWithConflictHandling.size.y"/>
-	<item value="http://wt/svn/test" key="RepositorySelectionPage.lastRepository"/>
 	<item value="967" key="CommitDialog.size.y"/>
 	<item value="525" key="UpdateDialogWithConflictHandling.size.x"/>
 	<item value="1174" key="CommitDialog.size.x"/>
+	<item value="586" key="passwordStores.size.y"/>
+	<item value="1920" key="passwordStores.size.x"/>
+	<item value="" key="DirectorySelectionPage.lastParent_http://wt/svn/test"/>
+	<item value="235" key="UpdateDialogWithConflictHandling.location.x"/>
+	<item value="http://wt/svn/test" key="RepositorySelectionPage.lastRepository"/>
 	<section name="CommitWizard">
 		<item value="500" key="VWeight2"/>
 		<item value="500" key="VWeight1"/>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h3 align="center">상품 등록</h3>
+<form action="pro-post" method="post">
+<h4>상 품 명 : <input type="text" name="PRONAME"></h4><br>
+<h4>가 격 : <input type="text" name="PROPRICE"></h4><br>
+<textarea cols="80" rows="5" name="CONTENT"></textarea><br/>
+<input type="submit" value="글올리기"/>
+<input type="reset" value="취 소"/>
+</form>
+</body>
+</html>
