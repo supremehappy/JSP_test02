@@ -6,6 +6,7 @@
 		<item value="Apache Tomcat v7.0"/>
 	</list>
 	<list key="J2EE_EXPORT_JST_WEB">
+		<item value="C:\Users\wtime\Desktop\Myhome.war"/>
 		<item value="C:\Program Files\Apache Software Foundation\Tomcat 7.0\webapps\test01.war"/>
 	</list>
 </section>
