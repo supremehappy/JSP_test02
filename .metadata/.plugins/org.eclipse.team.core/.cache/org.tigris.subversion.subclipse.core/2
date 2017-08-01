@@ -1,55 +1,81 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>Insert title here</title>
-</head>
-<body>
-<h4 align="center">장바구니 관리</h4>
-<c:choose>
-	<c:when test="${CART_LIST.itemSize == 0 }">
-		<h3 align="center">장바구니가 비었습니다.</h3>
-	</c:when>
-	<c:otherwise>
-		<table border="1">
-			<tr>
-				<td width="70">상품번호</td>
-				<td width="250">상품이름</td>
-				<td width="80">상품가격</td>
-				<td width="50">상품갯수</td>
-				<td width="80">수정/삭제</td>
-			</tr>
-			<c:forEach var="cnt" begin="0" end="${CART_LIST.itemSize -1 }">
-			<form action="modify-cart" method="post">
-			<input type="hidden" name="CODE" value="${CART_LIST.codeList[cnt] }"/>
-			<tr>
-				<td>${CART_LIST.codeList[cnt] }</td>
-				<td>${CART_LIST.nameList[cnt] }</td>
-				<td>${CART_LIST.priceList[cnt] }</td>
-				<td><input type="text" size="3" name="NUMBER"
-				value="${CART_LIST.numList[cnt] }"/></td>
-				<td><input type="submit" value="수정" name="BTN"/>
-				<input type="submit" value="삭제" name="BTN"/></td>
-			</tr>
-			</form>
-			</c:forEach>
-		</table>
-	</c:otherwise>
-</c:choose>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="myHomeMapper">
+	<select id="selectMaxSeqnoCart" resultType="Integer">
+		select max(seqno) max_no from cart
+	</select>
+	<insert id="insertCart" parameterType="model.CartItem">
+		insert into cart values(#{seqno},#{code},#{num},#{id})
+	</insert>
+	<select id="selectNextCount" parameterType="Integer"
+		resultType="Integer">
+		select count(*) as num from
+		(
+			select seqno, rownum rn from
+			(
+				select * from bbs order by seqno desc
+			)
+		)
+		where rn > ((#{no}-1)*5)
+	</select>
+	<select id="selectBBSPage" parameterType="Integer"
+		resultType="model.BBSItem">
+		select seqno,title,id,bbs_date from
+		(
+			select seqno,title,id,bbs_date,rownum rn from
+			(
+				select * from bbs order by seqno desc
+			)
+		)
+		where (rn > ((#{no}-1)*5)) and
+			(rn <![CDATA[ < ]]> ((#{no}-1)*5+6))	
+	</select>
+	<select id="selectPrevCount" parameterType="Integer"
+		resultType="Integer">
+		select count(*) as num from bbs where seqno > #{seqno}
+	</select>
+	<select id="selectPrevPage" parameterType="Integer"
+		resultType="model.BBSItem">
+		select seqno,title,id,bbs_date from
+		(
+			select seqno,title,id,bbs_date,rownum from
+			(
+				select * from 
+				(
+					select * from bbs where seqno > #{seqno}
+					order by seqno desc
+				)
+				order by seqno
+			)
+			where rownum <![CDATA[ < ]]>=5 order by seqno desc
+		)
+	</select>
+	<select id="selectNextPage" parameterType="Integer"
+		resultType="model.BBSItem">
+		select * from bbs where seqno <![CDATA[ < ]]> #{seqno}
+		order by seqno desc
+	</select>
+	<select id="selectPage" resultType="Integer">
+		select count(*) as num from bbs
+	</select>
+	<select id="selectBBSItem" parameterType="Integer"
+		resultType="model.BBSItem">
+		select * from bbs where seqno = #{seqno}
+	</select>
+	<select id="selectBBS" resultType="model.BBSItem">
+		select seqno,title,content,id,bbs_date from bbs
+		order by seqno desc	
+	</select>
+	<insert id="insertBBS" parameterType="model.BBSItem">
+		insert into bbs
+		values(#{seqno},#{title},#{content},#{id},#{bbs_date})
+	</insert>
+	<select id="selectMaxSeqno" resultType="Integer">
+		select max(seqno) as max_seqno from bbs
+	</select>
+	<select id="selectMember" parameterType="String"
+		resultType="model.UserInfo">
+		select id, password from user_info where id=#{id}
+	</select>
+</mapper>

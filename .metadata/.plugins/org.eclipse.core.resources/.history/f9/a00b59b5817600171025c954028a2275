@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="myHomeMapper">
+<!-- 초기 설정  -->
+	<!-- 조회 값이 하나 이상일경우 빈 생성(resultType="model.UserInfo") -->
+	<select id="selectMember" parameterType="String" resultType="model.UserInfo">
+		select id, password from user_info where id=#{id}
+	</select>
+	
+<!-- bbs -->	
+	<!-- bbs 제일 큰 글번호 -->	
+	<!-- 조회 값이 하나 일경우 빈 생성 없이 가능 -->
+	<select id="selectMaxSeqno" resultType="Integer">
+		select max(seqno) as max_seqno from bbs
+	</select>
+	
+	<!-- bbs 게시글 등록 -->	
+	<insert id="insetBBS" parameterType="model.BBSItem">
+		insert into bbs
+		values(#{seqno},#{title},#{content},#{id},#{bbs_date})
+	</insert>
+	
+	<!-- bbs 게시판 list 처리 -->
+	<select id="selectBBS" resultType="model.BBSItem">
+		select seqno, title, content, id, bbs_date from bbs
+		order by seqno desc
+	</select>	
+	
+	<!-- bbsitemservelt -->
+	<select id="selectBBSItem" parameterType="Integer" resultType="model.BBSItem">
+		select * from bbs where seqno =#{seqno}
+	</select>
+	
+	<!-- bbslistservelt - readPageNum-->
+	<select id="selectPage" resultType="Integer">
+		select count(*) as num from bbs
+	</select>
+	
+	<!-- bbslistservelt -readNextPage -->
+	<select id="selectNextPage" parameterType="Integer" resultType="model.BBSItem">
+		select * from bbs where seqno <![CDATA[<]]> #{seqno}
+		order by seqno desc
+	</select>
+	
+	<!-- bbslistservelt -readPrevPage -->
+	<select id="selectPrevPage" parameterType="Integer" resultType="model.BBSItem">
+		select seqno,title,id,bbs_date from
+		(
+			select seqno,title,id,bbs_date,rownum from
+			(
+				select * from 
+				(
+					select * from bbs where seqno > #{seqno}
+					order by seqno desc
+				)
+				order by seqno
+			)
+			where rownum <![CDATA[ < ]]>=5 order by seqno desc
+		)
+	</select>
+	
+	<select id="selectPrevCount" parameterType="Integer" resultType="Integer">
+		select count(*) as num from bbs where seqno > #{seqno}
+	</select>
+	
+	<!-- bbslistservelt -readPage -->
+	<select id="selectBBSPage" parameterType="Integer" resultType="model.BBSItem">
+		select seqno, title, id, bbs_date from
+		(
+			select seqno, title, id, bbs_date, rownum rn from
+			(
+				select * from bbs order by seqno desc
+			)
+		)
+		where (rn>((#{no}-1)*5)) and
+		(rn <![CDATA[<]]> ((#{no}-1)*5)+6)
+	</select>
+	
+	<select id="selectNextCount" parameterType="Integer" resultType="Integer">
+		select count(*) as num from
+		(
+			select seqno, rownum rn from
+			(
+				select * from bbs order by seqno desc
+			)
+		)
+		where rn>((#{no}-1)*5)
+	</select>
+
+<!-- product  -->
+	<!-- product 제일 큰 글번호 -->	
+	<select id="selectMaxPid" resultType="Integer">
+		select max(pid) as max_no from product_info
+	</select>
+
+	<!-- product 게시글 등록 -->	
+	<insert id="insetPro" parameterType="model.ProItem">
+		insert into product_info
+		values(#{pid},#{name},#{price},#{p_date},#{content},#{id})
+	</insert>
+
+	<!-- 게시판 list 처리 -->
+	<select id="selectPro" resultType="model.ProItem">
+		select pid, name, price, p_date, content, id from product_info
+		order by pid desc
+	</select>
+	
+	<!-- proitemservelt -->
+	<select id="selectProItem" parameterType="Integer" resultType="model.ProItem">
+		select * from product_info where pid =#{pid}
+	</select>
+	
+	<!-- prolistservelt - readPageNum-->
+	<select id="selectProPageNum" resultType="Integer">
+		select count(*) as num from product_info
+	</select>
+	
+	<!-- prolistservelt -readNextPage -->
+	<select id="selectProNextPage" parameterType="Integer" resultType="model.ProItem">
+		select * from product_info where pid <![CDATA[<]]> #{pid}
+		order by pid desc
+	</select>
+	
+	<!-- prolistservelt -readPrevPage -->
+	<select id="selectProPrevPage" parameterType="Integer" resultType="model.ProItem">
+		select pid,title,id,p_date from
+		(
+			select pid,name,price,p_date,id,rownum from
+			(
+				select * from 
+				(
+					select * from product_info where pid > #{pid}
+					order by pid desc
+				)
+				order by pid
+			)
+			where rownum <![CDATA[ < ]]>=5 order by pid desc
+		)
+	</select>
+	
+	<select id="selectProPrevCount" parameterType="Integer" resultType="Integer">
+		select count(*) as num from product_info where pid > #{pid}
+	</select>
+	
+	<!-- prolistservelt -readPage -->
+	<select id="selectProPage" parameterType="Integer" resultType="model.ProItem">
+		select pid,name,price,p_date,id from
+		(
+			select pid,name,price,p_date,id, rownum rn from
+			(
+				select * from product_info order by pid desc
+			)
+		)
+		where (rn>((#{no}-1)*5)) and
+		(rn <![CDATA[<]]> ((#{no}-1)*5)+6)
+	</select>
+	
+	<select id="selectProNextCount" parameterType="Integer" resultType="Integer">
+		select count(*) as num from
+		(
+			select pid, rownum rn from
+			(
+				select * from product_info order by pid desc
+			)
+		)
+		where rn>((#{no}-1)*5)
+	</select>
+	
+	
+</mapper>

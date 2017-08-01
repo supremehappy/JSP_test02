@@ -10,7 +10,7 @@
 <h2 align="center"></h2>
 [글번호] : ${BBS_ITEM.seqno }<br>
 [글제목] : ${BBS_ITEM.title }<br>
-[작성자] : ${BBS_ITEM.writer }, [작성일] : ${BBS_ITEM.date }<br>
+[작성자] : ${BBS_ITEM.id }, [작성일] : ${BBS_ITEM.bbs_date }<br>
 -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*<br>
 ${BBS_ITEM.content}
 </body>

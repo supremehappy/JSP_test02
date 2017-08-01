@@ -10,7 +10,7 @@
 <h2 align="center"></h2>
 [글번호] : ${PRO_ITEM.pid }<br>
 [상품명] : ${PRO_ITEM.name }<br>
-[가격] : ${PRO_ITEM.price}, [작성자] : ${PRO_ITEM.writer }, [작성일] : ${PRO_ITEM.date }<br>
+[가격] : ${PRO_ITEM.price}, [작성자] : ${PRO_ITEM.id }, [작성일] : ${PRO_ITEM.p_date }<br>
 -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*<br>
 ${PRO_ITEM.content}
 </body>

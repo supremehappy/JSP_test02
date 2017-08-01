@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +15,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import crud.CrudHome;
+import model.BBSItem;
+import model.ProItem;
 
 /**
  * Servlet implementation class ProListServlet
@@ -33,44 +39,32 @@ public class ProListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     private void readBBS(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-    	Connection conn= null;
-		PreparedStatement pstmt=null;
-		ProList list = new ProList();
+    	
+    	ProList proList = new ProList();
+    	CrudHome crud = new CrudHome();
+    	List list = crud.selectPro();
+    	Iterator it = list.iterator();
 		
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl","hr","1234");
-			
-			if(conn==null) throw new Exception("error");				
-			
-			pstmt= conn.prepareStatement("select * from product_info order by pid desc");
-			ResultSet rs = pstmt.executeQuery();
-			
-			for(int i =0; i<5 ; i++){
-				if(!rs.next()) break;
-				
-				list.setProList(i, rs.getInt("pid"));
-				list.setNameList(i, rs.getString("name"));
-				list.setPriceList(i, rs.getInt("price"));
-				list.setDateList(i, rs.getString("p_date"));
-				list.setWriterList(i, rs.getString("id"));
-			}
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			try{
-				pstmt.close(); 
-				conn.close();
-			}catch(Exception e){}
-		}
-		
-		list.setFirstPage(true);
+    	for(int i = 0; i<5 ;i++){
+    		if(it.hasNext()){
+    			ProItem item = (ProItem) it.next();
+        		
+    			proList.setProList(i, item.getPid());
+    			proList.setNameList(i,item.getName());
+    			proList.setPriceList(i, item.getPrice());
+    			proList.setDateList(i, item.getP_date());
+    			proList.setWriterList(i, item.getId());
+    		}else{
+    			break;
+    		}
+    	}
+    	
+    	proList.setFirstPage(true);
 		
 		int pageNum = readPageNum();
-		list.setPageNum(pageNum);
+		proList.setPageNum(pageNum);
 		
-		request.setAttribute("PRO_LIST", list);
+		request.setAttribute("PRO_LIST", proList);
 		RequestDispatcher dis = request.getRequestDispatcher("templat.jsp?BODY=proListView.jsp");
 		
 		dis.forward(request, response);
@@ -78,92 +72,65 @@ public class ProListServlet extends HttpServlet {
     
     private void readNextPage(String lastPid,HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
-    	Connection conn= null;
-		Statement stmt=null;
-		ProList list = new ProList();
+    	ProList list = new ProList();
+    	CrudHome crud = new CrudHome();
+    	List result = crud.selectProNextPage(Integer.parseInt(lastPid));
+    	Iterator it = result.iterator();
 		
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl","hr","1234");
-			
-			if(conn==null) throw new Exception("error");				
-			
-			stmt= conn.createStatement();
-			ResultSet rs = stmt.executeQuery("select * from product_info where pid< "+lastPid+"order by pid desc");
-			
-			for(int i =0; i<5 ; i++){
-				if(!rs.next()) break;
-				
-				list.setProList(i, rs.getInt("pid"));
-				list.setNameList(i, rs.getString("name"));
-				list.setPriceList(i, rs.getInt("price"));
-				list.setDateList(i, rs.getString("p_date"));
-				list.setWriterList(i, rs.getString("id"));
-			}
-			
-			if(!rs.next()) list.setLastPage(true);
-			
-			int pageNum = readPageNum();
-			list.setPageNum(pageNum);
-			
-			request.setAttribute("PRO_LIST", list);
-			RequestDispatcher dis = request.getRequestDispatcher("templat.jsp?BODY=proListView.jsp");
-			
-			dis.forward(request, response);
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			try{
-				stmt.close(); 
-				conn.close();
-			}catch(Exception e){}
-		}    	
+    	for(int i= 0; i<5;i++){
+    		if(it.hasNext()){
+    			ProItem item = (ProItem)it.next();
+    			
+    			list.setProList(i, item.getPid());
+				list.setNameList(i, item.getName());
+				list.setPriceList(i, item.getPrice());
+				list.setDateList(i, item.getP_date());
+				list.setWriterList(i, item.getId());
+    		}else{
+    			break;
+    		}
+    	}
+    	
+    	if(!it.hasNext()) list.setLastPage(true);
+    	
+    	int pageNum = readPageNum();
+		list.setPageNum(pageNum);
+    	
+    	request.setAttribute("PRO_LIST", list);
+		RequestDispatcher dis = request.getRequestDispatcher("templat.jsp?BODY=proListView.jsp");
+		
+		dis.forward(request, response);    	
+		
     }
     
     private void readPrevPage(String firstPid, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	Connection conn= null;
-		PreparedStatement pstmt=null;
-		ProList list = new ProList();
+    	
+    	ProList list = new ProList();
+    	CrudHome crud = new CrudHome();
+    	List result = crud.selectProPrevPage(Integer.parseInt(firstPid));
+    	Iterator it = result.iterator();
 		
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl","hr","1234");
-			
-			if(conn==null) throw new Exception("error");				
-			
-			String sql = "select * from product_info where pid > "+ firstPid + " order by pid desc";
-			pstmt= conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			ResultSet rs = pstmt.executeQuery();
-			
-			if(!rs.last()) throw new ServletException(); //맨 마지막 행으로 이동
-			
-			int rows = rs.getRow(); //마지막행 번호 읽음
-			
-			rs.absolute(rows-4); // 위로 4칸 이동
-						
-			for(int i =0; i<5 ; i++){
-				list.setProList(i, rs.getInt("pid"));
-				list.setNameList(i, rs.getString("name"));
-				list.setPriceList(i, rs.getInt("price"));
-				list.setDateList(i, rs.getString("p_date"));
-				list.setWriterList(i, rs.getString("id"));
+    	for(int i=0; i<5 ; i++){
+    		if(it.hasNext()){
+    			ProItem item = (ProItem)it.next();
+    			
+    			list.setProList(i, item.getPid());
+				list.setNameList(i, item.getName());
+				list.setPriceList(i, item.getPrice());
+				list.setDateList(i, item.getP_date());
+				list.setWriterList(i, item.getId());
 				
-				if(!rs.next()) break;
-			}
-			
-			if((rows-5)<5) list.setFirstPage(true); // 첫번째 페이지인지 검사
-			
-			int pageNum = readPageNum();
-			list.setPageNum(pageNum);
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			try{
-				pstmt.close(); 
-				conn.close();
-			}catch(Exception e){}
-		}
+    		}else{
+    			break;
+    		}
+    	}
+    	
+    	int cnt = crud.selectProPrevCount(Integer.parseInt(firstPid));
+    	
+    	if((cnt-5)<5) list.setFirstPage(true);
+    	
+    	int pageNum = readPageNum();
+		list.setPageNum(pageNum);
 		
 		request.setAttribute("PRO_LIST", list);
 		RequestDispatcher dis = request.getRequestDispatcher("templat.jsp?BODY=proListView.jsp");
@@ -173,48 +140,32 @@ public class ProListServlet extends HttpServlet {
     
     private void readPage(String pageNo, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
-    	Connection conn= null;
-		PreparedStatement pstmt=null;
-		ProList list = new ProList();
+    	ProList list = new ProList();
+    	CrudHome crud = new CrudHome();
+    	List result = crud.selectProPage(Integer.parseInt(pageNo));
+    	Iterator it = result.iterator();
 		
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl","hr","1234");
-			
-			if(conn==null) throw new Exception("error");				
-			
-			String sql = "select * from product_info order by pid desc";
-			pstmt= conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			ResultSet rs = pstmt.executeQuery();
-			
-			int page = Integer.parseInt(pageNo);
-			
-			if(page > 1) rs.absolute((page-1)*5);
-						
-			for(int i =0; i<5 ; i++){
-				if(!rs.next()) break;
-				
-				list.setProList(i, rs.getInt("pid"));
-				list.setNameList(i, rs.getString("name"));
-				list.setPriceList(i, rs.getInt("price"));
-				list.setDateList(i, rs.getString("p_date"));
-				list.setWriterList(i, rs.getString("id"));
-			}
-			
-			if(page==1) list.setFirstPage(true);
-			if(!rs.next()) list.setLastPage(true);
-			
-			int pageNum = readPageNum();
-			list.setPageNum(pageNum);
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			try{
-				pstmt.close(); 
-				conn.close();
-			}catch(Exception e){}
-		}
+    	for(int i = 0 ; i <5  ;i++){
+    		if(it.hasNext()){
+    			ProItem item = (ProItem)it.next();
+    			
+    			list.setProList(i, item.getPid());
+				list.setNameList(i, item.getName());
+				list.setPriceList(i, item.getPrice());
+				list.setDateList(i, item.getP_date());
+				list.setWriterList(i, item.getId());
+    		}else{
+    			break;
+    		}
+    	}
+    	
+    	if(Integer.parseInt(pageNo)==1) list.setFirstPage(true);
+    	
+    	int cnt = crud.selectProNextCount(Integer.parseInt(pageNo));
+    	if(cnt<6) list.setLastPage(true);
+    	
+    	int pageNum = readPageNum();
+		list.setPageNum(pageNum);	
 		
 		request.setAttribute("PRO_LIST", list);
 		RequestDispatcher dis = request.getRequestDispatcher("templat.jsp?BODY=proListView.jsp");
@@ -242,30 +193,8 @@ public class ProListServlet extends HttpServlet {
 	private int readPageNum(){
 		
 		int pageNum=0;
-		
-		Connection conn= null;
-		Statement stmt=null;
-		
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl","hr","1234");
-			
-			if(conn==null) throw new Exception("error");				
-			
-			stmt= conn.createStatement();
-			ResultSet rs = stmt.executeQuery("select count(*) as num from product_info");
-			
-			if(!rs.next()) return 0;
-			pageNum = rs.getInt("num");
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			try{
-				stmt.close(); 
-				conn.close();
-			}catch(Exception e){}
-		}
+		CrudHome crud = new CrudHome();
+		pageNum = crud.selectProPageNum();		
 		
 		return (pageNum+4)/5;
 	}	

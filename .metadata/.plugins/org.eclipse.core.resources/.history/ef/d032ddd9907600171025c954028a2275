@@ -1,0 +1,4 @@
+<%@ tag language="java" pageEncoding="UTF-8"%>
+<%@ tag body-content="empty" %>
+<%@ attrubute name="size" type="java.lang.Integer"%>
+<%@ attrubute name="color" %>

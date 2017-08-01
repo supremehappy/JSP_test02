@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +15,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import crud.CrudHome;
+import model.BBSItem;
 
 /**
  * Servlet implementation class BBSListServlet
@@ -33,45 +38,31 @@ public class BBSListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     private void readBBS(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-    	Connection conn= null;
-		PreparedStatement pstmt=null;
-		BBSList list = new BBSList();
-		
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl","hr","1234");
-			
-			if(conn==null) throw new Exception("error");				
-			
-			pstmt= conn.prepareStatement("select * from bbs order by seqno desc");
-			ResultSet rs = pstmt.executeQuery();
-			
-			for(int i =0; i<5 ; i++){
-				if(!rs.next()) break;
-				
-				list.setSeqNoList(i, rs.getInt("seqno"));
-				list.setTitleList(i, rs.getString("title"));
-				list.setWriterList(i, rs.getString("id"));
-				list.setDateList(i, rs.getString("bbs_date"));
-			}
-			
-			if(!rs.next()) list.setLastPage(true);
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			try{
-				pstmt.close(); 
-				conn.close();
-			}catch(Exception e){}
-		}
-		
-		list.setFirstPage(true);
+
+    	CrudHome crud = new CrudHome();
+    	List list = crud.selectBBS();
+    	Iterator it = list.iterator();
+    	BBSList bbsList = new BBSList();
+    	
+    	for(int i = 0; i<5 ;i++){
+    		if(it.hasNext()){
+    			BBSItem item = (BBSItem) it.next();
+        		
+        		bbsList.setSeqNoList(i, item.getSeqno());
+        		bbsList.setTitleList(i, item.getTitle());
+        		bbsList.setWriterList(i, item.getId());
+        		bbsList.setDateList(i, item.getBbs_date());
+    		}else{
+    			break;
+    		}
+    	}
+    	
+		bbsList.setFirstPage(true);
 		
 		int pageNum = readPageNum();
-		list.setPageNum(pageNum);
+		bbsList.setPageNum(pageNum);
 		
-		request.setAttribute("BBS_LIST", list);
+		request.setAttribute("BBS_LIST", bbsList);
 		RequestDispatcher dis = request.getRequestDispatcher("templat.jsp?BODY=bbsListView.jsp");
 		
 		dis.forward(request, response);
@@ -79,91 +70,61 @@ public class BBSListServlet extends HttpServlet {
     
     private void readNextPage(String lastSeqNo,HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
-    	Connection conn= null;
-		Statement stmt=null;
-		BBSList list = new BBSList();
+    	BBSList list = new BBSList();
+    	CrudHome crud = new CrudHome();
+    	List result = crud.selectNextPage(Integer.parseInt(lastSeqNo));
+    	Iterator it = result.iterator();
+    	
+    	for(int i= 0; i<5;i++){
+    		if(it.hasNext()){
+    			BBSItem item = (BBSItem)it.next();
+    			
+    			list.setSeqNoList(i, item.getSeqno());
+    			list.setTitleList(i, item.getTitle());
+    			list.setWriterList(i, item.getTitle());
+    			list.setDateList(i, item.getBbs_date());
+    		}else{
+    			break;
+    		}
+    	}
+    	
+    	if(!it.hasNext()) list.setLastPage(true);
+    	
+    	int pageNum = readPageNum();
+		list.setPageNum(pageNum);
+    	
+    	request.setAttribute("BBS_LIST", list);
+		RequestDispatcher dis = request.getRequestDispatcher("templat.jsp?BODY=bbsListView.jsp");
 		
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl","hr","1234");
-			
-			if(conn==null) throw new Exception("error");				
-			
-			stmt= conn.createStatement();
-			ResultSet rs = stmt.executeQuery("select * from bbs where seqno< "+lastSeqNo+"order by seqno desc");
-			
-			for(int i =0; i<5 ; i++){
-				if(!rs.next()) break;
-				
-				list.setSeqNoList(i, rs.getInt("seqno"));
-				list.setTitleList(i, rs.getString("title"));
-				list.setWriterList(i, rs.getString("id"));
-				list.setDateList(i, rs.getString("bbs_date"));
-			}
-			
-			if(!rs.next()) list.setLastPage(true);
-			
-			int pageNum = readPageNum();
-			list.setPageNum(pageNum);
-			
-			request.setAttribute("BBS_LIST", list);
-			RequestDispatcher dis = request.getRequestDispatcher("templat.jsp?BODY=bbsListView.jsp");
-			
-			dis.forward(request, response);
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			try{
-				stmt.close(); 
-				conn.close();
-			}catch(Exception e){}
-		}    	
+		dis.forward(request, response);
     }
     
     private void readPrevPage(String firstSeqNo, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	Connection conn= null;
-		PreparedStatement pstmt=null;
-		BBSList list = new BBSList();
-		
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl","hr","1234");
-			
-			if(conn==null) throw new Exception("error");				
-			
-			String sql = "select * from bbs where seqno > "+ firstSeqNo + " order by seqno desc";
-			pstmt= conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			ResultSet rs = pstmt.executeQuery();
-			
-			if(!rs.last()) throw new ServletException(); //맨 마지막 행으로 이동
-			
-			int rows = rs.getRow(); //마지막행 번호 읽음
-			
-			rs.absolute(rows-4); // 위로 4칸 이동
-						
-			for(int i =0; i<5 ; i++){
-				list.setSeqNoList(i, rs.getInt("seqno"));
-				list.setTitleList(i, rs.getString("title"));
-				list.setWriterList(i, rs.getString("id"));
-				list.setDateList(i, rs.getString("bbs_date"));
-				
-				if(!rs.next()) break;
-			}
-			
-			if((rows-5)<5) list.setFirstPage(true); // 첫번째 페이지인지 검사
-			
-			int pageNum = readPageNum();
-			list.setPageNum(pageNum);
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			try{
-				pstmt.close(); 
-				conn.close();
-			}catch(Exception e){}
-		}
-		
+    	BBSList list = new BBSList();
+    	CrudHome crud = new CrudHome();
+    	List result = crud.selectPrevPage(Integer.parseInt(firstSeqNo));
+    	Iterator it = result.iterator();
+    	
+    	for(int i=0; i<5 ; i++){
+    		if(it.hasNext()){
+    			BBSItem item = (BBSItem) it.next();
+    			
+    			list.setSeqNoList(i, item.getSeqno());
+				list.setTitleList(i, item.getTitle());
+				list.setWriterList(i, item.getId());
+				list.setDateList(i, item.getBbs_date());
+    		}else{
+    			break;
+    		}
+    	}
+    	
+    	int cnt = crud.selectPrevCount(Integer.parseInt(firstSeqNo));
+    	
+    	if((cnt-5)<5) list.setFirstPage(true);
+    	
+    	int pageNum = readPageNum();
+		list.setPageNum(pageNum);
+    	
 		request.setAttribute("BBS_LIST", list);
 		RequestDispatcher dis = request.getRequestDispatcher("templat.jsp?BODY=bbsListView.jsp");
 		
@@ -172,48 +133,32 @@ public class BBSListServlet extends HttpServlet {
     
     private void readPage(String pageNo, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
-    	Connection conn= null;
-		PreparedStatement pstmt=null;
-		BBSList list = new BBSList();
-		
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl","hr","1234");
-			
-			if(conn==null) throw new Exception("error");				
-			
-			String sql = "select * from bbs order by seqno desc";
-			pstmt= conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			ResultSet rs = pstmt.executeQuery();
-			
-			int page = Integer.parseInt(pageNo);
-			
-			if(page > 1) rs.absolute((page-1)*5);
-						
-			for(int i =0; i<5 ; i++){
-				if(!rs.next()) break;
-				
-				list.setSeqNoList(i, rs.getInt("seqno"));
-				list.setTitleList(i, rs.getString("title"));
-				list.setWriterList(i, rs.getString("id"));
-				list.setDateList(i, rs.getString("bbs_date"));
-			}
-			
-			if(page==1) list.setFirstPage(true);
-			if(!rs.next()) list.setLastPage(true);
-			
-			int pageNum = readPageNum();
-			list.setPageNum(pageNum);
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			try{
-				pstmt.close(); 
-				conn.close();
-			}catch(Exception e){}
-		}
-		
+    	BBSList list = new BBSList();
+    	CrudHome crud = new CrudHome();
+    	List result = crud.selectBBSPage(Integer.parseInt(pageNo));
+    	Iterator it = result.iterator();
+    	
+    	for(int i = 0 ; i <5  ;i++){
+    		if(it.hasNext()){
+    			BBSItem item = (BBSItem) it.next();
+    			
+    			list.setSeqNoList(i, item.getSeqno());
+				list.setTitleList(i, item.getTitle());
+				list.setWriterList(i, item.getId());
+				list.setDateList(i, item.getBbs_date());
+    		}else{
+    			break;
+    		}
+    	}
+    	
+    	if(Integer.parseInt(pageNo)==1) list.setFirstPage(true);
+    	
+    	int cnt = crud.selectNextCount(Integer.parseInt(pageNo));
+    	if(cnt<6) list.setLastPage(true);
+    	
+    	int pageNum = readPageNum();
+		list.setPageNum(pageNum);
+    	
 		request.setAttribute("BBS_LIST", list);
 		RequestDispatcher dis = request.getRequestDispatcher("templat.jsp?BODY=bbsListView.jsp");
 		
@@ -240,30 +185,8 @@ public class BBSListServlet extends HttpServlet {
 	private int readPageNum(){
 		
 		int pageNum=0;
-		
-		Connection conn= null;
-		Statement stmt=null;
-		
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl","hr","1234");
-			
-			if(conn==null) throw new Exception("error");				
-			
-			stmt= conn.createStatement();
-			ResultSet rs = stmt.executeQuery("select count(*) as num from bbs");
-			
-			if(!rs.next()) return 0;
-			pageNum = rs.getInt("num");
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			try{
-				stmt.close(); 
-				conn.close();
-			}catch(Exception e){}
-		}
+		CrudHome crud = new CrudHome();
+		pageNum = crud.selectPage();
 		
 		return (pageNum+4)/5;
 	}

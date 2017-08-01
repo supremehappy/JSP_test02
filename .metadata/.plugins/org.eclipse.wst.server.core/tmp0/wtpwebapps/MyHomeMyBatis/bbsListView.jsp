@@ -27,6 +27,7 @@ page : ${BBS_LIST.pageNum }
 	</c:forEach>
 </table>
 
+ 
 <c:if test="${!BBS_LIST.firstPage }">
 	<a href="bbs-list?FIRST_SEQNO=${BBS_LIST.seqNoList[0] }">previous page</a>
 </c:if>
@@ -38,5 +39,6 @@ page : ${BBS_LIST.pageNum }
 <c:if test="${!BBS_LIST.lastPage }">
 	<a href="bbs-list?LAST_SEQNO=${BBS_LIST.seqNoList[BBS_LIST.listSize-1] }">next page</a>
 </c:if>
+
 </body>
 </html>
