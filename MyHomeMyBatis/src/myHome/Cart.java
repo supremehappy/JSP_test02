@@ -42,6 +42,11 @@ public class Cart {
 			
 			if(codeList.get(i)==code){// 동일한 상품번호가 있다면
 				numList.set(i, numList.get(i)+1);
+				
+				System.out.println("addCart code: "+code);
+				System.out.println("addCart numList.get(i): "+numList.get(i));
+				System.out.println("addCart id: "+id);
+				
 				updateCart(code,numList.get(i),id);
 				return;
 			}
@@ -54,12 +59,12 @@ public class Cart {
 
 	}
 	
-	public void deleteItem(String code) throws ServletException{
+	public void deleteItem(String code, String id) throws ServletException{
 		for(int i=0; i<codeList.size();i++){
 			if(codeList.get(i)==Integer.parseInt(code)){
 				codeList.remove(i);
 				numList.remove(i);
-				deleteCart(Integer.parseInt(code));
+				deleteCart(Integer.parseInt(code),id);
 				return;
 			}
 		}
@@ -81,64 +86,51 @@ public class Cart {
 		CrudHome crud = new CrudHome();
 		int maxSeqno = crud.selectMaxSeqnoCart();
 		
-		seqno = seqno+ maxSeqno;
+		seqno = seqno + maxSeqno;
 		
 		CartItem item = new CartItem();
 		
+		System.out.println("insertCart id : "+id);
 		item.setSeqno(seqno);
 		item.setCode(code);
 		item.setNum(num);
 		item.setId(id);
 		
-		int result = crud.insetCart(item);
+		int result = crud.insertCart(item);
 		
-		if(result<0) throw new ServletException("cart error!");
+		if(result < 0) throw new ServletException("cart error!");
 		
 	}
 	
 	private void updateCart(int code, int num, String id) throws ServletException{
 		
-		Connection conn=null; Statement stmt = null;
-		int seqno=1;
+		CrudHome crud = new CrudHome();
+		CartItem item = new CartItem();
 		
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl","hr","1234");
-			
-			if(conn==null) throw new Exception("error");				
-			stmt=conn.createStatement();
-			
-			String sql="update cart set num="+num+" where code="+code+" and id='"+id+"'";
-			
-			stmt.executeUpdate(sql);
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			try{stmt.close(); conn.close();}catch(Exception e){}
-		}
+		item.setCode(code);
+		item.setId(id);
+		item.setNum(num);
+		
+		System.out.println("updateCart code :"+code);
+		System.out.println("updateCart id :"+id);
+		System.out.println("updateCart num :"+num);
+		int result = crud.deleteCart(item);
+		
+		if(result < 0) throw new ServletException("cart error!");
 	}
 	
-	private void deleteCart(int code) throws ServletException{
+	private void deleteCart(int code, String id) throws ServletException{
 		
-		Connection conn=null; Statement stmt = null;
-		int seqno=1;
+		CrudHome crud = new CrudHome();
+		CartItem item = new CartItem();
 		
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl","hr","1234");
-			
-			if(conn==null) throw new Exception("error");				
-			stmt=conn.createStatement();
-			
-			String sql="delete from cart where code="+code;
-			
-			stmt.executeUpdate(sql);
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			try{stmt.close(); conn.close();}catch(Exception e){}
-		}
+		item.setCode(code);
+		item.setId(id);
+		
+		System.out.println("code"+code);
+		System.out.println("id"+id);		
+		int result = crud.deleteCart(item);
+		
+		if(result < 0) throw new ServletException("cart error!");
 	}
 }

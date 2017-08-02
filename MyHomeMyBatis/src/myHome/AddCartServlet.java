@@ -38,7 +38,10 @@ public class AddCartServlet extends HttpServlet {
 		Cart cart = (Cart)session.getAttribute("CART");
 		String id = (String)session.getAttribute("id");
 		
-		if(cart==null) cart=new Cart();
+		System.out.println("addCartServlet ID:"+id);
+		System.out.println("addCartServlet pid:"+pid);
+		
+		if(cart == null) cart = new Cart();
 		cart.addCart(Integer.parseInt(pid), 1, id);
 		
 		session.setAttribute("CART", cart);

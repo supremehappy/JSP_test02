@@ -53,7 +53,7 @@ public class modifyCartServlet extends HttpServlet {
 			cart.modifyItem(code, num, id);
 		}else if(btn.equals("삭제")){
 			//Cart 에 담긴 상품 중 전달된 상품코드와 일치하는 상품과 갯수를 삭제
-			cart.deleteItem(code);
+			cart.deleteItem(code,id);
 		}
 		response.sendRedirect("cart-list");
 	}

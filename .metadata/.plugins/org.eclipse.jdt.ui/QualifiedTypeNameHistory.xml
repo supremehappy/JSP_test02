@@ -17,7 +17,9 @@
 <fullyQualifiedTypeName name="java.io.IOException"/>
 <fullyQualifiedTypeName name="org.apache.ibatis.io.Resources"/>
 <fullyQualifiedTypeName name="model.ProItem"/>
-<fullyQualifiedTypeName name="java.util.Iterator"/>
 <fullyQualifiedTypeName name="model.BBSItem"/>
+<fullyQualifiedTypeName name="model.CartItem"/>
+<fullyQualifiedTypeName name="crud.CrudHome"/>
 <fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.Iterator"/>
 </qualifiedTypeNameHistroy>

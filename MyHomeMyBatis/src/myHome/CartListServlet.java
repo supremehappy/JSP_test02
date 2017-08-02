@@ -1,10 +1,8 @@
 package myHome;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import crud.CrudHome;
+import model.CartItem;
 
 /**
  * Servlet implementation class CartListServlet
@@ -36,9 +37,10 @@ public class CartListServlet extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		Cart cart = (Cart)session.getAttribute("CART");
+		String id = (String)session.getAttribute("id");
 		
 		if(cart != null){//카트가 있다면
-			CartList list = readDB(cart);
+			CartList list = readDB(id);
 			request.setAttribute("CART_LIST", list);
 		}else{ //카트가 없다면
 			request.setAttribute("CART_LIST", null);
@@ -49,42 +51,33 @@ public class CartListServlet extends HttpServlet {
 		
 	}
 
-	private CartList readDB(Cart cart)throws ServletException{
+	private CartList readDB(String id)throws ServletException{
 		CartList list = new CartList();
-		Connection conn=null; Statement stmt = null;
+		CrudHome crud=new CrudHome();
 		
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl","hr","1234");			
-			
-			if(conn==null) throw new Exception("error");				
-			stmt=conn.createStatement();
+		System.out.println("CartListServlet : "+id);
 		
-			int itemNum = cart.getItemSize();
+		List<CartItem> result = crud.selectCart(id);
+		Iterator it = result.iterator();
+		
+		int loop=0;
+		
+		while(it.hasNext()){
+			CartItem item = (CartItem)it.next();
 			
-			for(int i = 0; i<itemNum; i++){
-				
-				int code=cart.getCode(i);
-				int num = cart.getNum(i);
-				
-				String sql="select name,price from product_info where pid="+code;
-				ResultSet rs = stmt.executeQuery(sql);
-				
-				if(!rs.next()) throw new ServletException("no!");
-				
-				list.setCodeList(i, code);
-				list.setPriceList(i, rs.getInt("price"));
-				list.setNameList(i, rs.getString("name"));
-				list.setNumList(i, num);
-				
-			}
-		}catch(Exception e){ 
+			list.setCodeList(loop, item.getCode());
+			list.setNumList(loop, item.getNum());
+			list.setNameList(loop, item.getName());
+			list.setPriceList(loop, item.getPrice());
 			
-		}finally{
-			try{
-				conn.close(); stmt.close();
-			}catch(Exception e){}
+			System.out.println("setCodeList : "+loop+", "+ item.getCode());
+			System.out.println("setNumList : "+loop+", "+ item.getNum());
+			System.out.println("setNameList : "+loop+", "+ item.getName());
+			System.out.println("setPriceList : "+loop+", "+ item.getPrice());
+			
+			loop++;
 		}
+		
 		return list;
 	}
 	

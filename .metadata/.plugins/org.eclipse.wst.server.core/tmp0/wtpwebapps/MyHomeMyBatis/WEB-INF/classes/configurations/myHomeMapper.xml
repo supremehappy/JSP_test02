@@ -170,12 +170,29 @@
 	
 <!-- cart -->
 	<!-- cart -->
-	<select id="selectMaxSeqnoCart"  resultType="Integer">
+	<select id="selectMaxSeqnoCart" resultType="Integer">
 		select max(seqno) max_no from cart
 	</select>
 	
 	<!-- cart - insertCart -->
-	<select id="insetCart" parameterType="model.CartItem">
+	<insert id="insertCart" parameterType="model.CartItem">
 		insert into cart values(#{seqno},#{code},#{num},#{id})
+	</insert>
+	
+	<!-- cart - deleteCart -->
+	<delete id="deleteCart" parameterType="model.CartItem">
+		delete from cart where code=#{code} and id=#{id}
+	</delete>
+	
+	<!--  cart - updateCart  -->
+	<update id="updateCart" parameterType="model.CartItem">
+		update cart set num=#{num} where code=#{code} and id=#{id}
+	</update>
+	
+	<!-- CartListServlet - readDB-->
+	<select id="selectCart" parameterType="String" resultType="model.CartItem">
+		select c.code, c.num, p.name, p.price
+		from cart c, product_info p
+		where c.code = p.pid and c.id=#{id}
 	</select>
 </mapper>

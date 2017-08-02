@@ -1,63 +1,47 @@
-package myhome;
+package test;
 
 import java.io.IOException;
-
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 
 /**
- * Servlet implementation class AddCartServlet
+ * Servlet Filter implementation class Test2Filter
  */
-@WebServlet("/add-cart")
-public class AddCartServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
+@WebFilter("/calling")
+public class Test2Filter implements Filter {
+
     /**
-     * @see HttpServlet#HttpServlet()
+     * Default constructor. 
      */
-    public AddCartServlet() {
-        super();
+    public Test2Filter() {
         // TODO Auto-generated constructor stub
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see Filter#destroy()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String pid= request.getParameter("CODE");
-		if(pid == null){
-			throw new ServletException("상품 코드가 없습니다.");
-		}
-		//상품검색을 한다.-> 검색된 정보를 빈에 저장한다.
-		HttpSession session = request.getSession();
-		Cart cart = (Cart)session.getAttribute("CART");
-		String id = (String)session.getAttribute("ID");
-		if(cart == null) cart = new Cart();
-		cart.addCart(Integer.parseInt(pid), 1, id);
-		session.setAttribute("CART", cart);//카트를 세션에 보관
-		response.sendRedirect("addCartResult.jsp");
+	public void destroy() {
+		// TODO Auto-generated method stub
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		System.out.println("필터2 가로챔");
+		chain.doFilter(request, response);
+	}
+
+	/**
+	 * @see Filter#init(FilterConfig)
+	 */
+	public void init(FilterConfig fConfig) throws ServletException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }
-
-
-
-
-
-
-
-
-
-

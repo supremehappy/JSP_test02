@@ -355,14 +355,34 @@ public class CrudHome {
 		}
 	}
 	
-//--------------------------------------------------------------------------------초기 설정
+//--------------------------------------------------------------------------------cart
 	//
 	public Integer selectMaxSeqnoCart(){
 		SqlSession sqlSession = getConnection().openSession();
 		
 		try{
+			if(sqlSession == null)			System.out.println("sqlSession is null");
 			String sql=namespace+".selectMaxSeqnoCart";
-			int result=sqlSession.selectOne(sql);
+			Object result = sqlSession.selectOne(sql);
+			
+			if(result == null) 	return 0;
+			else return Integer.parseInt(String.valueOf(result));
+			
+		}finally{
+			sqlSession.close();
+		}
+	}
+	
+	//
+	public Integer insertCart(CartItem item){
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql=namespace+".insertCart";
+			int result = sqlSession.insert(sql, item);
+			
+			if(result > 0) sqlSession.commit();
+			else sqlSession.rollback();
 			return result;
 			
 		}finally{
@@ -371,16 +391,55 @@ public class CrudHome {
 	}
 	
 	//
-	public Integer insetCart(CartItem item){
+	public Integer deleteCart(CartItem item){
 		SqlSession sqlSession = getConnection().openSession();
 		
 		try{
-			String sql=namespace+".insetCart";
-			int result=sqlSession.selectOne(sql, item);
+			String sql=namespace+".deleteCart";
+			int result = sqlSession.selectOne(sql, item);
 			
 			if(result >0) sqlSession.commit();
 			else sqlSession.rollback();
+			
 			return result;
+			
+		}finally{
+			sqlSession.close();
+		}
+	}
+	
+	//
+	public Integer updateCart(CartItem item){
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql=namespace+".updateCart";
+			int result = sqlSession.selectOne(sql, item);
+			
+			if(result >0) sqlSession.commit();
+			else sqlSession.rollback();
+			
+			return result;
+			
+		}finally{
+			sqlSession.close();
+		}
+	}
+	
+	public List<CartItem> selectCart(String id){
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql=namespace+".selectCart";
+			
+			System.out.println("selectCart sql : "+sql);
+			System.out.println("selectCart id : "+id);
+			
+			List<CartItem> list = sqlSession.selectOne(sql, id);
+			
+			System.out.println("selectCart list : "+list);
+			
+			return list;
 			
 		}finally{
 			sqlSession.close();

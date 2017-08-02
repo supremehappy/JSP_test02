@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BookStoreMapper">
+
+<!-- login -->
+	<!-- 계정 조회 -->
+	<select id="selectMember" parameterType="String" resultType="model.UserInfo">
+		select id, pw from user_info where id=#{id}
+	</select>
+	
+<!-- notice -->
+	<!-- 글내용조회 - NoticeItemServlet -->	
+	<select id="selectNoticeItem" parameterType="Integer" resultType="model.NoticeItem">
+		select * from notice where seqno = #{seqno}
+	</select>	
+	
+	<!-- 게시글목록조회 - NoticeListServlet - readNotice -->
+	<select id="selectNotice" resultType="model.NoticeItem">
+		select seqno,title,content,id,bbs_date from notice
+		order by seqno desc	
+	</select>
+	
+	<!-- 다음페이지 - NoticeListServlet - readNextPage  -->
+	<select id="selectNoticeNextPage" parameterType="Integer" resultType="model.NoticeItem">
+		select * from notice where seqno <![CDATA[ < ]]> #{seqno}
+		order by seqno desc
+	</select>
+	
+	<!-- 이전페이지 - NoticeListServlet - readPrevPage -->
+	<select id="selectNoticePrevPage" parameterType="Integer"	resultType="model.NoticeItem">
+		select seqno,title,id,bbs_date from
+		(
+			select seqno,title,id,bbs_date,rownum from
+			(
+				select * from 
+				(
+					select * from notice where seqno > #{seqno}
+					order by seqno desc
+				)
+				order by seqno
+			)
+			where rownum <![CDATA[ < ]]>=5 order by seqno desc
+		)
+	</select>
+</mapper>

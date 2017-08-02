@@ -8,10 +8,14 @@
   <module moduleId="org.eclipse.jst.jee.server:filterTest" serverId="Tomcat v7.0 Server at localhost"/>
   <module moduleId="org.eclipse.jst.jee.server:06" serverId="Tomcat v7.0 Server at localhost"/>
   <module moduleId="org.eclipse.jst.jee.server:09" serverId="Tomcat v7.0 Server at localhost"/>
+  <module moduleId="org.eclipse.jst.jee.server:MyHomeMybatis1" serverId="Tomcat v7.0 Server at localhost"/>
+  <module moduleId="org.eclipse.jst.jee.server:MyHomeMybatisTest" serverId="Tomcat v7.0 Server at localhost"/>
   <module moduleId="org.eclipse.jst.jee.server:MyHome" serverId="Tomcat v7.0 Server at localhost"/>
   <module moduleId="org.eclipse.jst.jee.server:test" serverId="Tomcat v7.0 Server at localhost"/>
+  <module moduleId="org.eclipse.jst.jee.server:BookStore" serverId="Tomcat v7.0 Server at localhost"/>
   <module moduleId="org.eclipse.jst.jee.server:test01" serverId="Tomcat v7.0 Server at localhost"/>
   <module moduleId="org.eclipse.jst.jee.server:info" serverId="Tomcat v7.0 Server at localhost"/>
   <module moduleId="org.eclipse.jst.jee.server:MyHomeMyBatis" serverId="Tomcat v7.0 Server at localhost"/>
+  <module moduleId="org.eclipse.jst.jee.server:testBook" serverId="Tomcat v7.0 Server at localhost"/>
   <module moduleId="org.eclipse.jst.jee.server:myHome" serverId="Tomcat v7.0 Server at localhost"/>
 </modules>
