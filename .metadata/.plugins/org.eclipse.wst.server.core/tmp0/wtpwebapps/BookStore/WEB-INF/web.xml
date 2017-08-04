@@ -9,12 +9,22 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-    <filter>
-    <filter-name>loginCheck</filter-name>
-    <filter-class>BookStore.LoginCheckFilter</filter-class>
+  
+ <filter>
+    <filter-name>loginCheckNotice</filter-name>
+    <filter-class>bookStore.AdminCheckFilter</filter-class>
   </filter>
   <filter-mapping>
-    <filter-name>loginCheck</filter-name>
+    <filter-name>loginCheckNotice</filter-name>
     <url-pattern>/notice-post</url-pattern>
+  </filter-mapping>
+  
+  <filter>
+    <filter-name>loginCheckUser</filter-name>
+    <filter-class>bookStore.LoginCheckFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>loginCheckUser</filter-name>
+    <url-pattern>/bbs-post</url-pattern>
   </filter-mapping>
 </web-app>

@@ -126,8 +126,12 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log." suffix=".txt"/>
 
-      <Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\MyHomeMyBatis" path="/MyHomeMyBatis" reloadable="true" source="org.eclipse.jst.jee.server:MyHomeMyBatis"/>
-      <Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\MyHomeMybatisTest" path="/MyHomeMybatisTest" reloadable="true" source="org.eclipse.jst.jee.server:MyHomeMybatisTest"/><Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\BookStore" path="/BookStore" reloadable="true" source="org.eclipse.jst.jee.server:BookStore"/><Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\testBook" path="/testBook" reloadable="true" source="org.eclipse.jst.jee.server:testBook"/></Host>
+      
+      <Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\BookStore" path="/BookStore" reloadable="true" source="org.eclipse.jst.jee.server:BookStore"/>
+      <Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\testBook" path="/testBook" reloadable="true" source="org.eclipse.jst.jee.server:testBook"/>
+      <Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\MyHomeMybatisTest" path="/MyHomeMybatisTest" reloadable="true" source="org.eclipse.jst.jee.server:MyHomeMybatisTest"/>
+      <Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ImageUpload" path="/ImageUpload" reloadable="true" source="org.eclipse.jst.jee.server:ImageUpload"/>
+      <Context docBase="C:\Users\wtime\Documents\GitHub\JSP_test02\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\MyHomeMybatisImageTest" path="/MyHomeMybatisImageTest" reloadable="true" source="org.eclipse.jst.jee.server:MyHomeMybatisImageTest"/></Host>
     </Engine>
   </Service>
 </Server>

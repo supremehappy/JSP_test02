@@ -57,35 +57,35 @@ public class LoginServlet extends HttpServlet {
 		String id = request.getParameter("ID");
 		String pwd = request.getParameter("PWD");
 		String msg = "";
-		if(checkLogin(id,pwd)){//·Î±×ÀÎ ¼º°ø
+		if(checkLogin(id,pwd)){//ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			HttpSession session = request.getSession();
 			session.setAttribute("ID", id);
-			CartList list = selectCart(id);//°èÁ¤À¸·Î Àå¹Ù±¸´ÏÁ¤º¸ °Ë»ö
-			if(list != null){//Àå¹Ù±¸´Ï Á¤º¸°¡ ÀÖ´Â °æ¿ì
+			CartList list = selectCart(id);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ù±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½
+			if(list != null){//ï¿½ï¿½Ù±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½
 				Cart cart = new Cart();
-				//CartList¿¡ ÀÖ´Â »óÇ°¹øÈ£,»óÇ°°¹¼ö¸¦ Cart¿¡ ÀúÀåÇÑ´Ù.
+				//CartListï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½Ç°ï¿½ï¿½È£,ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Cartï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 				Integer[] c = list.getCodeList();
 				Integer[] n = list.getNumList();
-				System.out.println("»óÇ°°¹¼ö:"+list.getItemSize());
+				System.out.println("ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½:"+list.getItemSize());
 				for(int i=0; i<list.getItemSize(); i++){
 					cart.setCodeList(c[i]);
-					System.out.println("»óÇ°¹øÈ£:"+c[i]);
+					System.out.println("ï¿½ï¿½Ç°ï¿½ï¿½È£:"+c[i]);
 					cart.setNumList(n[i]);
 				}
 				session.setAttribute("CART", cart);
 			}
 			msg = "OK";
-		}else{//·Î±×ÀÎ ½ÇÆÐ
+		}else{//ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			msg = "NOK";
 		}
-		//ÆäÀÌÁö¸¦ ¹Ù²Û´Ù.
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²Û´ï¿½.
 		response.sendRedirect("template.jsp?BODY=loginResult.jsp?RESULT="+msg);
 	}
 	private boolean checkLogin(String id, String pwd)throws ServletException{
 		CrudHome crud = new CrudHome();
 		UserInfo info = crud.selectMember(id);
 		if(info != null){
-			if(info.getPassword().equals(pwd)){
+			if(info.getPw().equals(pwd)){
 				return true;
 			}else{
 				return false;

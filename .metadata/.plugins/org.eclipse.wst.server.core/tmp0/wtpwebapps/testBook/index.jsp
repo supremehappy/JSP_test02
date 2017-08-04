@@ -31,8 +31,8 @@
 				<a href="?">회원 가입</a><br>
 				<a href="?">도서 등록</a><br>
 				<a href="?">도서 정보</a><br>
-				<a href="?">공지사항 등록</a><br>
-				<a href="?">공지사항</a><br>
+				<a href="index.jsp?BODY=noticeInput.jsp">공지사항 등록</a><br>
+				<a href="notice-list">공지사항</a><br>
 				<a href="?">자유게시판 등록</a><br>
 				<a href="?">자유게시판</a><br>
 				<a href="?">Q&A 등록</a><br>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="imageMapper">
+	<sql id="baseColumns">
+		writing_id,register_date,writer_name,email,image_name,password,title
+	</sql>
+	
+	<select id="selectImageList" resultType="model.Writing">
+		select <include refid="baseColumns"/>
+		 from writing_info order by writing_id desc
+	</select>
+	
+	<insert id="insertLastId" parameterType="model.IdSequence">
+		insert into id_sequence values(#{name}, #{last_id})
+	</insert>
+	
+	<update id="updateLastId" parameterType="model.IdSequence">
+		update id_sequence set last_id=#{last_id} 
+		where table_name = #{name}
+	</update>
+	
+	<select id="selectLastId" parameterType="String" resultType="Integer">
+		select last_id from id_sequence where table_name = #{name}
+	</select>
+	
+	<insert id="insertWritingContent" parameterType="model.Writing">
+		insert into writing_content values(#{writing_id},#{content})
+	</insert>
+	
+	<insert id="insertWrtingInfo" parameterType="model.Writing">
+		insert into writing_info values(#{writing_id},#{group_id},
+		#{order_no},#{parent_id},#{register_date},#{writer_name},
+		#{email},#{image_name},#{password},#{title},#{level_no})
+	</insert>
+	
+	<select id="selectWritingInfo" parameterType="Integer" resultType="model.Writing">
+		select <include refid="baseColumns"/> from writing_info
+		where writing_id = #{writing_id}
+	</select>
+	
+	<select id="selectWritingContent" parameterType="Integer" resultType="String">
+		select content from writing_content
+		where writing_id = #{writing_id}
+	</select>
+	
+	<delete id="deleteWritingInfo" parameterType="Integer" >
+		delete from writing_info where writing_id=#{writing_id}
+	</delete>
+	
+	<delete id="deleteWritingContent" parameterType="Integer">
+		delete from writing_content where writing_id=#{writing_id} 
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

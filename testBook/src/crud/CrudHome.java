@@ -9,29 +9,32 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import model.CartItem;
 import model.NoticeItem;
 import model.UserInfo;
 
 public class CrudHome {
 
-//-------------------------------------------------------------------- 기초 설정
-	private final String namespace = "myHomeMapper";
+//-------------------------------------------------------------------- 湲곗큹 �꽕�젙
+	private final String namespace = "BookStoreMapper";
 
-	private SqlSessionFactory getConnection(){
-		String resource="mybatis-config.xml";
-		InputStream inputStream=null;
-		try{
-			inputStream=Resources.getResourceAsStream(resource);
-		}catch(IOException e){
+	private SqlSessionFactory getConnection() {
+		String resource = "mybatis-config.xml";
+		InputStream inputStream = null;
+		
+		try {
+			inputStream = Resources.getResourceAsStream(resource);
+		}
+		catch(IOException e) {
 			
 		}
-		SqlSessionFactoryBuilder builder = 
-				new SqlSessionFactoryBuilder();
+		
+		SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
 		return builder.build(inputStream);
 	}
 
 //-------------------------------------------------------------------- login	
-	//계정 조회
+	//怨꾩젙 議고쉶
 	public UserInfo selectMember(String id){
 		SqlSession sqlSession = getConnection().openSession();
 		try{
@@ -44,7 +47,7 @@ public class CrudHome {
 	}
 	
 //-------------------------------------------------------------------- notice	
-	// 가장 큰 게시글 번호
+	// 媛��옣 �겙 寃뚯떆湲� 踰덊샇
 	public Integer selectNoticeMaxSeqno(){
 		SqlSession sqlSession = getConnection().openSession();
 		
@@ -62,7 +65,7 @@ public class CrudHome {
 		}
 	}
 	
-	// 게시글 등록
+	// 寃뚯떆湲� �벑濡�
 	public Integer insertNoticeBBS(NoticeItem bbs){
 		SqlSession sqlSession = getConnection().openSession();
 		
@@ -79,7 +82,7 @@ public class CrudHome {
 		}
 	}
 	
-	//게시글목록 조회
+	//寃뚯떆湲�紐⑸줉 議고쉶
 	public List<NoticeItem> selectNotice(){
 		SqlSession sqlSession = getConnection().openSession();
 		
@@ -93,7 +96,7 @@ public class CrudHome {
 		}
 	}
 	
-	//글 내용 조회
+	//湲� �궡�슜 議고쉶
 	public NoticeItem selectNoticeItem(Integer seqno){
 		SqlSession sqlSession = getConnection().openSession();
 		
@@ -107,7 +110,7 @@ public class CrudHome {
 		}
 	}
 	
-	// 게시글 수
+	// 寃뚯떆湲� �닔
 	public Integer selectNoticePage(){
 		SqlSession sqlSession = getConnection().openSession();
 		
@@ -121,7 +124,7 @@ public class CrudHome {
 		}
 	}
 	
-	// 다음페이지
+	// �떎�쓬�럹�씠吏�
 	public List<NoticeItem> selectNoticeNextPage(int seqno){
 		SqlSession sqlSession = getConnection().openSession();
 		
@@ -135,7 +138,7 @@ public class CrudHome {
 		}
 	}	
 		
-	// 이전페이지
+	// �씠�쟾�럹�씠吏�
 	public List<NoticeItem> selectNoticePrevPage(int seqno){
 		SqlSession sqlSession = getConnection().openSession();
 		
@@ -162,7 +165,7 @@ public class CrudHome {
 		}
 	}
 	
-	// 페이지번호
+	// �럹�씠吏�踰덊샇
 	public List<NoticeItem> selectNoticePage(int seqno){
 		SqlSession sqlSession = getConnection().openSession();
 		
@@ -185,6 +188,103 @@ public class CrudHome {
 			
 			return result;
 		}finally{
+			sqlSession.close();
+		}
+	}
+	
+//-------------------------------------------------------------------- cart
+	public Integer selectMaxCart_no() {
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql = namespace + ".selectMaxCart_no";
+			Object result = sqlSession.selectOne(sql);
+			
+			if(result == null) {
+				return 0;
+			}
+			else {
+				return Integer.parseInt(String.valueOf(result));
+			}
+		}
+		finally {
+			sqlSession.close();
+		}
+	}
+	
+	public Integer insertCart(CartItem item) {
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql = namespace + ".insertCart";
+			int result = sqlSession.insert(sql, item);
+			
+			if(result > 0) {
+				sqlSession.commit();
+			}
+			else {
+				sqlSession.rollback();
+			}
+			
+			return result;
+		}
+		finally {
+			sqlSession.close();
+		}
+	}
+
+	public Integer updateCart(CartItem item) {
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql = namespace + ".updateCart";
+			int result = sqlSession.update(sql,item);
+			
+			if(result > 0) {
+				sqlSession.commit();
+			}
+			else {
+				sqlSession.rollback();
+			}
+			
+			return result;
+		}
+		finally {
+			sqlSession.close();
+		}
+	}
+	
+	public Integer deleteCart(CartItem item) {
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql = namespace + ".deleteCart";
+			int result = sqlSession.delete(sql, item);
+			
+			if(result > 0) {
+				sqlSession.commit();
+			}
+			else {
+				sqlSession.rollback();
+			}
+			
+			return result;
+		}
+		finally {
+			sqlSession.close();
+		}
+	}
+		
+	public List<CartItem> selectCart(String id) {
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql=namespace+".selectCart";
+			List<CartItem> list=sqlSession.selectList(sql, id);
+			
+			return list;
+		}
+		finally {
 			sqlSession.close();
 		}
 	}

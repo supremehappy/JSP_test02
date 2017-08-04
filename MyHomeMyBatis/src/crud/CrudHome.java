@@ -25,13 +25,13 @@ public class CrudHome {
 //--------------------------------------------------------------------------------초기 설정	
 	//매퍼 처리하는 객체 생성 메소드
 	private SqlSessionFactory getConnection(){
-		String resource="MyBatisConfig.xml";
+		String resource="mybatis-config.xml";
 		InputStream inputStream=null;
 		
 		try{
-			inputStream=Resources.getResourceAsStream(resource);
+			inputStream = Resources.getResourceAsStream(resource);
 		}catch(IOException e){
-			e.printStackTrace();
+			
 		}
 		
 		SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();

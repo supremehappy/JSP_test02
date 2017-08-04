@@ -26,6 +26,8 @@
 		<a href="">상품 등록</a><br/>
 		<a href="product-list">상품 목록</a><br/>
 		<a href="cart-list">장바구니</a><br/>
+		<a href="write-form">이미지 게시글 및 답글 작성</a><br/>
+		<a href="image-list">이미지 게시판</a><br/>
 	</td>
 	<td width="650" valign="top">
 		<c:choose>

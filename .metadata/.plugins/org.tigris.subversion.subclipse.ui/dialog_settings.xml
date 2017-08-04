@@ -3,20 +3,24 @@
 	<item value="342" key="ExportRemoteFolderDialog.location.x"/>
 	<item value="352" key="ExportRemoteFolderDialog.location.y"/>
 	<item value="88" key="HistoryTableProvider.HistoryDialog.Date"/>
+	<item value="240" key="SetCommitPropertiesDialog.size.x"/>
+	<item value="282" key="SetCommitPropertiesDialog.size.y"/>
 	<item value="36" key="UpdateDialogWithConflictHandling.location.y"/>
 	<item value="449" key="HistoryDialog.location.x"/>
 	<item value="169" key="HistoryDialog.location.y"/>
 	<item value="586" key="passwordStores.size.y"/>
 	<item value="1920" key="passwordStores.size.x"/>
+	<item value="127" key="HistoryTableProvider.SVNHistoryPage.Revision"/>
 	<item value="" key="DirectorySelectionPage.lastParent_http://wt/svn/test"/>
-	<item value="581" key="HistoryDialog.weights.0"/>
+	<item value="631" key="HistoryTableProvider.SVNHistoryPage.Comment"/>
+	<item value="595" key="HistoryDialog.weights.0"/>
 	<item value="70" key="HistoryTableProvider.HistoryDialog.Author"/>
 	<item value="0" key="CommitDialog.location.y"/>
 	<item value="130" key="passwordStores.location.y"/>
 	<item value="0" key="CommitDialog.location.x"/>
 	<item value="0" key="passwordStores.location.x"/>
-	<item value="176" key="HistoryDialog.weights.2"/>
-	<item value="221" key="HistoryDialog.weights.1"/>
+	<item value="179" key="HistoryDialog.weights.2"/>
+	<item value="225" key="HistoryDialog.weights.1"/>
 	<item value="500" key="CommitDialog.weights.0"/>
 	<item value="500" key="CommitDialog.weights.1"/>
 	<item value="727" key="UpdateDialogWithConflictHandling.size.y"/>
@@ -24,8 +28,12 @@
 	<item value="967" key="CommitDialog.size.y"/>
 	<item value="525" key="UpdateDialogWithConflictHandling.size.x"/>
 	<item value="1174" key="CommitDialog.size.x"/>
+	<item value="316" key="HistoryTableProvider.SVNHistoryPage.Date"/>
+	<item value="252" key="HistoryTableProvider.SVNHistoryPage.Author"/>
 	<item value="235" key="UpdateDialogWithConflictHandling.location.x"/>
 	<item value="311" key="ExportRemoteFolderDialog.size.x"/>
+	<item value="332" key="SetCommitPropertiesDialog.location.y"/>
+	<item value="840" key="SetCommitPropertiesDialog.location.x"/>
 	<item value="252" key="ExportRemoteFolderDialog.size.y"/>
 	<item value="http://wt/svn/test" key="RepositorySelectionPage.lastRepository"/>
 	<item value="400" key="HistoryDialog.size.x"/>

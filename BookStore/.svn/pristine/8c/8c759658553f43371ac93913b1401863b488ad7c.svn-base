@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BookStoreMapper">
+	
+	<!-- ========================자유게시판 등록=========================== -->
+	<insert id="insertBBS" parameterType="model.BBSItem">
+		insert into bbs
+		values(#{seqno},#{title},#{content},#{id},#{bbs_date})
+	</insert>
+	
+	<select id="selectMaxSeqno" resultType="Integer">
+		select max(seqno) as max_seqno from bbs
+	</select>
+	
+	<!-- ===============================도서정보=============================== -->
+	<!-- 첫 페이지 확인을 위한 조회(나머지가 있으면 첫 페이지가 아님) -->
+	<select id="selectNextCount" parameterType="Integer" resultType="Integer">
+		select count(*) as num from
+		(
+			select book_code, rownum rn from
+			(
+				select * from book_info order by book_code desc
+			)
+		)
+		where rn > ((#{no} - 1) * 5)
+	</select>
+	<!-- 페이지 번호를 클릭해 이동하기 위한 처리 -->
+	<select id="selectBookPage" parameterType="Integer" resultType="model.BookItem">
+		select book_code, book_title, writer, company, price, reg_date from
+		(
+			select book_code, book_title, writer, company, price, reg_date, rownum rn from
+			(
+				select * from book_info order by book_code desc
+			)
+		)
+		where (rn > ((#{no} - 1) * 5)) and
+			(rn <![CDATA[<]]> ((#{no} - 1) * 5 + 6))
+	</select>
+	<!-- 도서정보 이전 글 갯수 찾기 -->
+	<select id="selectPrevCount" parameterType="Integer" resultType="Integer">
+		select count(*) as num from book_info where book_code > #{book_code}<!-- 현재 글번호보다 큰 글번호의 갯수를 가져온다. -->
+	</select>
+	<!-- 도서정보 이전 페이지 조회 -->
+	<select id="selectPrevPage" parameterType="integer" resultType="model.BookItem">
+		select book_code, book_title, writer, company, price, reg_date from
+		(
+			select book_code, book_title, writer, company, price, reg_date, rownum from<!-- rownum을 통해 순번을 매긴다 -->
+			(
+				select * from
+				(
+					select * from book_info where book_code > #{book_code} order by book_code desc
+				)
+				order by book_code
+			)
+			where rownum <![CDATA[<]]>=5 order by book_code desc
+		)
+	</select>
+	<!-- 도서정보 다음 페이지 조회 -->
+	<select id="selectNextPage" parameterType="Integer" resultType="model.BookItem">
+		select * from book_info where book_code <![CDATA[<]]> #{book_code} order by book_code desc<!-- MyBatis에서 <를 엘리먼트의 시작으로 판단, 일반 문자로 처리 -->
+	</select>
+	<!-- 도서정보 글 갯수 카운트 -->
+	<select id="selectPage" resultType="Integer">
+		select count(*) as num from book_info
+	</select>
+	<!-- 도서정보 본문 조회 -->
+	<select id="selectBookItem" parameterType="Integer" resultType="model.BookItem">
+		select * from book_info where book_code = #{book_code}
+	</select>
+	<!-- 도서정보 리스트 조회 -->
+	<select id="selectBook" resultType="model.BookItem"><!-- 반환타입이 객체일 경우 package.Bean으로 작성 -->
+		select * from book_info order by book_code desc<!-- select *로 작성할 수 있지만 Bean객체의 변수 순서에 유의 -->
+	</select>
+	<!-- 도서정보 글쓰기 -->
+	<insert id="insertBook" parameterType="model.BookItem">
+		insert into book_info
+		values(#{book_code}, #{book_title}, #{writer}, #{company}, #{price}, #{reg_date})
+	</insert>
+	<!-- 도서코드 최대값 조회 -->
+	<select id="selectMaxBookCode" resultType="Integer"><!-- 반환되는 값이 하나이기 때문에 Bean이 아닌 반환되는 객체 타입으로 리턴한다. --> 
+		select max(book_code) as max_book_code from book_info
+	</select>
+	<!-- ===============================도서정보end============================ -->
+<!-- UserInput -->
+	<insert id="insertUser" parameterType="model.UserInfo">
+		insert into user_info
+		values(#{id},#{pw},#{name},#{addr},#{tel},#{email},#{age},0)
+	</insert>
+		
+<!-- login -->
+	<!-- 계정 조회 -->
+	<select id="selectMember" parameterType="String" resultType="model.UserInfo">
+		select id, pw from user_info where id=#{id}
+	</select>
+	
+<!-- notice -->
+	<!-- 가장 큰 게시글번호 -->
+	<select id="selectNoticeMaxSeqno" resultType="Integer">
+		select max(seqno) as max_seqno from notice
+	</select>
+	
+	<!-- 게시글 등록 -->
+	<insert id="insertNoticeBBS" parameterType="model.NoticeItem">
+		insert into notice
+		values(#{seqno},#{title},#{content},#{id},#{bbs_date},#{admin})
+	</insert>
+	
+	<!-- 게시글목록조회 - NoticeListServlet - readNotice -->
+	<select id="selectNotice" resultType="model.NoticeItem">
+		select seqno,title,content,id,bbs_date from notice
+		order by seqno desc	
+	</select>
+	
+	<!-- 글내용조회 - NoticeItemServlet -->	
+	<select id="selectNoticeItem" parameterType="Integer" resultType="model.NoticeItem">
+		select * from notice where seqno = #{seqno}
+	</select>	
+	
+	<!-- 게시글 수 - NoticeListServlet - readPageNum -->
+	<select id="selectNoticePage" resultType="Integer">
+		select count(*) as num from notice
+	</select>
+	
+	<!-- 다음페이지 - NoticeListServlet - readNextPage  -->
+	<select id="selectNoticeNextPage" parameterType="Integer" resultType="model.NoticeItem">
+		select * from notice where seqno <![CDATA[ < ]]> #{seqno}
+		order by seqno desc
+	</select>
+	
+	<!-- 이전페이지 - NoticeListServlet - readPrevPage -->
+	<select id="selectNoticePrevPage" parameterType="Integer"	resultType="model.NoticeItem">
+		select seqno,title,id,bbs_date from
+		(
+			select seqno,title,id,bbs_date,rownum from
+			(
+				select * from 
+				(
+					select * from notice where seqno > #{seqno}
+					order by seqno desc
+				)
+				order by seqno
+			)
+			where rownum <![CDATA[ < ]]>=5 order by seqno desc
+		)
+	</select>
+	
+	<select id="selectNoticePrevCount" parameterType="Integer" resultType="Integer">
+		select count(*) as num from notice where seqno > #{seqno}
+	</select>
+	
+	<!-- 페이지번호 - NoticeListServlet - readPage -->
+	<select id="selectNoticeNumPage" parameterType="Integer" resultType="model.NoticeItem">
+		select seqno,title,id,bbs_date from
+		(
+			select seqno,title,id,bbs_date,rownum rn from
+			(
+				select * from notice order by seqno desc
+			)
+		)
+		where (rn > ((#{no}-1)*5)) and
+			(rn <![CDATA[ < ]]> ((#{no}-1)*5+6))	
+	</select>
+	
+	<select id="selectNoticeNextCount" parameterType="Integer" resultType="Integer">
+		select count(*) as num from
+		(
+			select seqno, rownum rn from
+			(
+				select * from notice order by seqno desc
+			)
+		)
+		where rn > ((#{no}-1)*5)
+	</select>
+	
+<!-- admin -->
+	<!-- 계정 조회 -->
+	<select id="selectAdmin" parameterType="String" resultType="model.UserInfo">
+		select id, admin from user_info where id=#{id}
+	</select>	
+	
+<!-- cart -->	
+	<select id="selectMaxCart_no" resultType="Integer">
+		select max(cart_no) max_no from cart
+	</select>
+	<insert id="insertCart" parameterType="model.CartItem">
+		insert into cart values ( #{cart_no}, #{book_code}, #{num}, #{price}, #{id})
+	</insert>
+	<update id="updateCart" parameterType="model.CartItem">
+		update cart set num=#{num} where book_code=#{book_code} and id=#{id}
+	</update>
+	<delete id="deleteCart" parameterType="model.CartItem">
+		delete from cart where book_code=#{book_code} and id=#{id}
+	</delete>
+	<select id="selectCart" parameterType="String" resultType="model.CartItem">
+		select c.book_code, c.num, b.book_title, b.price 
+		from cart c, book_info b 
+		where c.book_code = b.book_code and c.id = #{id}
+	</select>
+</mapper>

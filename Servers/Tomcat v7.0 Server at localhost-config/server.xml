@@ -126,8 +126,12 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log." suffix=".txt"/>
 
-      <Context docBase="MyHomeMyBatis" path="/MyHomeMyBatis" reloadable="true" source="org.eclipse.jst.jee.server:MyHomeMyBatis"/>
-      <Context docBase="MyHomeMybatisTest" path="/MyHomeMybatisTest" reloadable="true" source="org.eclipse.jst.jee.server:MyHomeMybatisTest"/><Context docBase="BookStore" path="/BookStore" reloadable="true" source="org.eclipse.jst.jee.server:BookStore"/><Context docBase="testBook" path="/testBook" reloadable="true" source="org.eclipse.jst.jee.server:testBook"/></Host>
+      
+      <Context docBase="BookStore" path="/BookStore" reloadable="true" source="org.eclipse.jst.jee.server:BookStore"/>
+      <Context docBase="testBook" path="/testBook" reloadable="true" source="org.eclipse.jst.jee.server:testBook"/>
+      <Context docBase="MyHomeMybatisTest" path="/MyHomeMybatisTest" reloadable="true" source="org.eclipse.jst.jee.server:MyHomeMybatisTest"/>
+      <Context docBase="ImageUpload" path="/ImageUpload" reloadable="true" source="org.eclipse.jst.jee.server:ImageUpload"/>
+      <Context docBase="MyHomeMybatisImageTest" path="/MyHomeMybatisImageTest" reloadable="true" source="org.eclipse.jst.jee.server:MyHomeMybatisImageTest"/></Host>
     </Engine>
   </Service>
 </Server>

@@ -1,0 +1,113 @@
+package servlets;
+
+import java.io.IOException;
+import java.util.Calendar;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
+import crud.CrudImage;
+import model.IdSequence;
+import model.Writing;
+
+/**
+ * Servlet implementation class WriteServlet
+ */
+@WebServlet("/write.do")
+public class WriteServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public WriteServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		request.setCharacterEncoding("UTF-8");
+		String savePath="uploadfiles";
+		int uploadLimit = 5*1024*1024; // 이미지 용량 제한
+		String encType="UTF-8";		
+		ServletContext context = getServletContext();
+		String uploadPath = context.getRealPath(savePath);//이미지 저장되는 경로
+		String fileName="";		
+		
+		try{
+			//MultipartRequest 파일 업로드 객체 / DefaultFileRenamePolicy() 업로드 파일 이름 처리 메소드
+			MultipartRequest multi = new MultipartRequest(request,uploadPath,uploadLimit,encType, new DefaultFileRenamePolicy());
+			
+			fileName = multi.getFilesystemName("imagename");
+			
+			if(fileName==null){
+				throw new ServletException("upload error!"); 
+			}else{
+				Writing writing = new Writing();
+				
+				String title = multi.getParameter("title");
+				String nick = multi.getParameter("nick");
+				String email = multi.getParameter("email");
+				String pwd = multi.getParameter("password");
+				String content = multi.getParameter("content");
+				
+				Calendar today = Calendar.getInstance();
+				int year = today.get(Calendar.YEAR);
+				int month = today.get(Calendar.MONTH) + 1;
+				int day = today.get(Calendar.DATE);
+				int hour = today.get(Calendar.HOUR_OF_DAY);
+				int min = today.get(Calendar.MINUTE);
+				int sec = today.get(Calendar.SECOND);
+				String register_date = year+"/ "+month+"/" +day+"/ "+hour+" : "+min+" : "+sec;
+				
+				writing.setTitle(title);
+				writing.setWriter_name(nick);
+				writing.setEmail(email);
+				writing.setPassword(pwd);
+				writing.setContent(content);
+				writing.setImage_name(fileName);
+				writing.setRegister_date(register_date);
+				
+				// 글번호 검색
+				CrudImage crud = new CrudImage();
+				IdSequence seq = new IdSequence();
+				int seqno = crud.selectLastId("writing_info");
+				
+				seqno = seqno + 1;
+				
+				seq.setLast_id(seqno); 
+				seq.setName("writing_info"); 
+				crud.insertLastId(seq); // 새로운 글번호 삽입 
+				writing.setWriting_id(seqno); // 새 이미지글에 글번호 삽입
+				
+				int result = crud.insertWritingInfo(writing);
+				
+				if(result <0) throw new ServletException("writing_info table insert fail");
+					
+			}
+		}catch(Exception e){
+			throw new ServletException(e);
+		}
+		response.sendRedirect("template.jsp?BODY=writeResult.jsp");
+	}
+
+}

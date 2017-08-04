@@ -19,7 +19,10 @@
 <fullyQualifiedTypeName name="model.ProItem"/>
 <fullyQualifiedTypeName name="model.BBSItem"/>
 <fullyQualifiedTypeName name="model.CartItem"/>
-<fullyQualifiedTypeName name="crud.CrudHome"/>
-<fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.util.Iterator"/>
+<fullyQualifiedTypeName name="model.NoticeItem"/>
+<fullyQualifiedTypeName name="crud.CrudHome"/>
+<fullyQualifiedTypeName name="java.net.URLEncoder"/>
+<fullyQualifiedTypeName name="model.Writing"/>
+<fullyQualifiedTypeName name="java.util.List"/>
 </qualifiedTypeNameHistroy>

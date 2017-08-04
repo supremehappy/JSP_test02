@@ -1,0 +1,132 @@
+package crud;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
+import model.CartItem;
+
+public class CrudHome {
+
+	private final String namespace = "BookStoreMapper";
+	
+	//===================================================================
+	
+	public Integer selectMaxCart_no() {
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql = namespace + ".selectMaxCart_no";
+			Object result = sqlSession.selectOne(sql);
+			
+			if(result == null) {
+				return 0;
+			}
+			else {
+				return Integer.parseInt(String.valueOf(result));
+			}
+		}
+		finally {
+			sqlSession.close();
+		}
+	}
+	
+	public Integer insertCart(CartItem item) {
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql = namespace + ".insertCart";
+			int result = sqlSession.insert(sql, item);
+			
+			if(result > 0) {
+				sqlSession.commit();
+			}
+			else {
+				sqlSession.rollback();
+			}
+			
+			return result;
+		}
+		finally {
+			sqlSession.close();
+		}
+	}
+
+	public Integer updateCart(CartItem item) {
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql = namespace + ".updateCart";
+			int result = sqlSession.update(sql,item);
+			
+			if(result > 0) {
+				sqlSession.commit();
+			}
+			else {
+				sqlSession.rollback();
+			}
+			
+			return result;
+		}
+		finally {
+			sqlSession.close();
+		}
+	}
+	
+	public Integer deleteCart(CartItem item) {
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql = namespace + ".deleteCart";
+			int result = sqlSession.delete(sql, item);
+			
+			if(result > 0) {
+				sqlSession.commit();
+			}
+			else {
+				sqlSession.rollback();
+			}
+			
+			return result;
+		}
+		finally {
+			sqlSession.close();
+		}
+	}
+		
+	public List<CartItem> selectCart(String id) {
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql=namespace+".selectCart";
+			List<CartItem> list=sqlSession.selectList(sql, id);
+			
+			return list;
+		}
+		finally {
+			sqlSession.close();
+		}
+	}	
+	
+	//===================================================================
+
+	private SqlSessionFactory getConnection() {
+		String resource = "mybatis-config.xml";//ȯ�漳������ �̸�
+		InputStream inputStream = null;
+		
+		try {
+			inputStream = Resources.getResourceAsStream(resource);
+		}
+		catch(IOException e) {
+			
+		}
+		
+		SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
+		return builder.build(inputStream);
+	}
+}

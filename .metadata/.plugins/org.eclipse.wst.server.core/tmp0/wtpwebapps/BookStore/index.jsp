@@ -4,6 +4,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+
 <meta charset="UTF-8">
 <title>Book Store</title>
 <style>
@@ -21,23 +23,23 @@
 			<td width="200" valign="top">
 				<c:choose>
 					<c:when test="${sessionScope.ID == null}">
-						<%-- <jsp:include page="login.jsp"/> --%>
+						<jsp:include page="login.jsp"/>
 					</c:when>
 					<c:otherwise>
-						<%-- <jsp:include page="logout.jsp"/> --%>
+						<jsp:include page="logout.jsp"/>
 					</c:otherwise>
 				</c:choose>
 				<a href="index.jsp?BODY=about.jsp">About</a><br>
-				<a href="?">회원 가입</a><br>
-				<a href="?">도서 등록</a><br>
-				<a href="?">도서 정보</a><br>
-				<a href="?">공지사항 등록</a><br>
-				<a href="?">공지사항</a><br>
-				<a href="?">자유게시판 등록</a><br>
-				<a href="?">자유게시판</a><br>
+				<a href="index.jsp?BODY=userInput.jsp">회원 가입</a><br>
+				<a href="index.jsp?BODY=bookInput.jsp">도서 등록</a><br>
+				<a href="book-list">도서 정보</a><br>
+				<a href="index.jsp?BODY=noticeInput.jsp">공지사항 등록</a><br>
+				<a href="notice-list">공지사항</a><br>
+				<a href="index.jsp?BODY=bbsInput.jsp">자유게시판 등록</a><br>
+				<a href="bbs-list">자유게시판</a><br>
 				<a href="?">Q&A 등록</a><br>
 				<a href="?">Q&A</a><br>
-				<a href="?">장바구니</a><br>
+				<a href="cart-list">장바구니</a><br>
 			</td>
 			<td width="800" valign="top">
 				<c:choose>
