@@ -1,0 +1,86 @@
+package servlets;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import crud.CrudImage;
+import model.Condition;
+import model.Writing;
+
+/**
+ * Servlet implementation class ImageListServlet
+ */
+@WebServlet("/image-list")
+public class ImageListServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ImageListServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		CrudImage crud = new CrudImage();
+		int count = crud.selectImageCount();
+		int totalPageCount = 0;
+		int startRow = 0; int endRow = 0;
+		String pageNum = request.getParameter("page");
+		if(pageNum == null) pageNum = "1";
+		int currentPage = Integer.parseInt(pageNum);
+		if(count > 0){
+			totalPageCount = count / 5;
+			if(count % 5 > 0) totalPageCount++;
+			startRow = (currentPage - 1)*5 + 1;
+			endRow = currentPage * 5;
+			if(endRow > count){
+				endRow = count;
+			}
+		}
+//		List<Writing> list = crud.selectImageList();//��ü ��ȸ
+		Condition c = new Condition();
+		c.setStartRow(startRow); c.setEndRow(endRow);
+		List<Writing> list = crud.selectImageListCondition(c);//�κ� ��ȸ(startRow���� endRow����)
+		
+		request.setAttribute("startRow", startRow);
+		request.setAttribute("endRow", endRow);
+		request.setAttribute("count", count);
+		
+		request.setAttribute("pageCount", totalPageCount);
+		request.setAttribute("LIST", list);
+		RequestDispatcher rd = request.getRequestDispatcher(
+				"template.jsp?BODY=list_view.jsp");
+		rd.forward(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}
+
+
+
+
+
+
+
+
+
+

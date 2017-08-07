@@ -82,7 +82,7 @@ public class Writing {
 	public String getContent() {
 		return content;
 	}
-	public void setContent(String cotent) {
-		this.content = cotent;
+	public void setContent(String content) {
+		this.content = content;
 	}
 }

@@ -31,19 +31,26 @@
 		<tr>
 			<td colspan="2">
 				<a href="">[답글]</a>
-				<a href="">[수정]</a>
+				<a href="javascript:goModify()">[수정]</a>
 				<a href="javascript:goDelete()">[삭제]</a>
 				<a href="image-list">[목록]</a>
 			</td>
 		</tr>
 	</table>
 </c:if>
+
 <script type="text/javascript">
 function goDelete(){
 	document.move.action="image-delete";
 	document.move.submit();
 }
+
+function goModify(){
+	document.move.action="image-update";
+	document.move.submit();
+}
 </script>
+
 <form name="move" method="post">
 	<input type="hidden" name="id" value="${writing.writing_id }"/>
 </form>

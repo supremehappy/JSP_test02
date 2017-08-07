@@ -33,8 +33,19 @@ public class ImageListServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		CrudImage crud = new CrudImage();
+		int count = crud.selectImageCount();
+		int totalPageCount=0;
+		
+		if(count>0){
+			totalPageCount=count/5;
+			
+			if(count %5 >0) totalPageCount++;
+		}
+		
 		List<Writing> list = crud.selectImageList();
 		request.setAttribute("LIST", list);
+		request.setAttribute("pageCount", totalPageCount);
+		
 		RequestDispatcher rd = request.getRequestDispatcher(
 				"template.jsp?BODY=list_view.jsp");
 		rd.forward(request, response);

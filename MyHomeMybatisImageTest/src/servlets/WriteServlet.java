@@ -44,7 +44,7 @@ public class WriteServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("euc-kr");
+		request.setCharacterEncoding("UTF-8");
 		String savePath="uploadfiles";
 		int max_limit = 5*1024*1024;
 		String encType="euc-kr";
@@ -57,15 +57,15 @@ public class WriteServlet extends HttpServlet {
 				new DefaultFileRenamePolicy());
 			fileName = multi.getFilesystemName("imagename");
 			if(fileName == null){
-				throw new ServletException("¾÷·Îµå Áß ¹®Á¦¹ß»ý");
+				throw new ServletException("ï¿½ï¿½ï¿½Îµï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß»ï¿½");
 			}else{
-				////////³¯Â¥ ±¸ÇÔ///////
+				////////ï¿½ï¿½Â¥ ï¿½ï¿½ï¿½ï¿½///////
 				Calendar today = Calendar.getInstance();
 				int year = today.get(Calendar.YEAR);
 				int month=today.get(Calendar.MONTH)+1;
 				int date=today.get(Calendar.DATE);
 				String register_date=year+"/"+month+"/"+date+"/";
-				int hour=today.get(Calendar.HOUR_OF_DAY);//24½Ã°£Á¦
+				int hour=today.get(Calendar.HOUR_OF_DAY);//24ï¿½Ã°ï¿½ï¿½ï¿½
 				int min=today.get(Calendar.MINUTE);
 				int sec=today.get(Calendar.SECOND);
 				register_date=register_date+":"+hour+":"+min+":"+sec;
@@ -89,21 +89,21 @@ public class WriteServlet extends HttpServlet {
 				IdSequence seq = new IdSequence();
 				seq.setLast_id(seqno);seq.setName("writing_info");
 				if(seqno == 1){
-					crud.insertLastId(seq);//»õ·Î¿î ±Û¹øÈ£ »ðÀÔ
+					crud.insertLastId(seq);//ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½Û¹ï¿½È£ ï¿½ï¿½ï¿½ï¿½
 				} else {
-					crud.updateLastId(seq);//±Û¹øÈ£ º¯°æ
+					crud.updateLastId(seq);//ï¿½Û¹ï¿½È£ ï¿½ï¿½ï¿½ï¿½
 				}
-				writing.setWriting_id(seqno);//»õÀÌ¹ÌÁö±Û¿¡ ±Û¹øÈ£ »ðÀÔ
-				int result = crud.insertWrtingInfo(writing);//»õ±Û»ðÀÔ
+				writing.setWriting_id(seqno);//ï¿½ï¿½ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½Û¿ï¿½ ï¿½Û¹ï¿½È£ ï¿½ï¿½ï¿½ï¿½
+				int result = crud.insertWrtingInfo(writing);//ï¿½ï¿½ï¿½Û»ï¿½ï¿½ï¿½
 				result = crud.insertWritingContent(writing);
 				if(result < 0) throw new ServletException(
-						"writing_info Å×ÀÌºí¿¡ »ðÀÔ Áß ¿¹¿Ü");
+						"writing_info ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 				
 			}
 		}catch(Exception e){
 			throw new ServletException(e);
 		}
-		//ÆäÀÌÁö ÀüÈ¯
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
 		response.sendRedirect("image-list");
 	}
 

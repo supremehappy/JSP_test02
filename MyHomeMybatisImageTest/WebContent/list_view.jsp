@@ -22,6 +22,9 @@
 	</c:forEach>
 	</c:if>
 </table>
+<c:forEach var="pageNo" begin="1" end="${pageCount }">
+	[${pageNo }]
+</c:forEach>
 <form method="post" name="sender">
 	<input type="hidden" name="id"/>
 </form>

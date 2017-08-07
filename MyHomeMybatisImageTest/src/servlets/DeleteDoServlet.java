@@ -50,10 +50,10 @@ public class DeleteDoServlet extends HttpServlet {
 			result = crud.deleteWritingContent(Integer.parseInt(id));
 			
 			if(result <0) throw new ServletException("delete fail");
-			url="template.jps?BODY=delete_result.jsp";
+			url="template.jsp?BODY=delete_result.jsp";
 			
 		}else{
-			url="template.jps?BODY=delete_result.jsp";
+			url="template.jsp?BODY=delete_result.jsp?id="+id;
 		}
 		response.sendRedirect(url);
 	}

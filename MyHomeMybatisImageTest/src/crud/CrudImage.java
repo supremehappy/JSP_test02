@@ -169,6 +169,9 @@ public class CrudImage {
 			String sql = namespace + ".deleteWritingInfo";
 			int result = session.delete(sql, seqno);
 			
+			if(result >0) session.commit();
+			else session.rollback();
+			
 			return result;
 		}finally{
 			session.close();
@@ -182,6 +185,61 @@ public class CrudImage {
 		try{
 			String sql = namespace + ".deleteWritingContent";
 			int result = session.delete(sql, seqno);
+			
+			if(result >0) session.commit();
+			else session.rollback();
+			
+			return result;
+		}finally{
+			session.close();
+		}
+	}
+	
+//-------------------------------------------------------------------
+	
+	public int updateWritingInfo(Writing writing){
+		
+		SqlSession session = getConnection().openSession();
+		
+		try{
+			String sql = namespace + ".updateWritingInfo";
+			int result = session.update(sql,writing);
+			
+			if(result > 0) session.commit();
+			else session.rollback();
+			
+			return result;
+		}finally{
+			session.close();
+		}
+	}
+	
+	public int updateWritingContent(Writing writing){
+		
+		SqlSession session = getConnection().openSession();
+		
+		try{
+			String sql = namespace + ".updateWritingContent";
+			int result = session.update(sql,writing);
+			
+			if(result > 0) session.commit();
+			else session.rollback();
+			
+			return result;
+		}finally{
+			session.close();
+		}
+	}
+	
+//-------------------------------------------------------------------
+	
+	public int selectImageCount(){
+		
+		SqlSession session = getConnection().openSession();
+		
+		try{
+			String sql = namespace + ".selectImageCount";
+			int result = session.selectOne(sql);
 			
 			return result;
 		}finally{

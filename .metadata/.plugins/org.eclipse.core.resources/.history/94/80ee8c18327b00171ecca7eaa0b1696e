@@ -1,0 +1,210 @@
+package myHome;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import crud.CrudHome;
+import model.BBSItem;
+import model.ProItem;
+
+/**
+ * Servlet implementation class ProListServlet
+ */
+@WebServlet("/pro-list")
+public class ProListServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ProListServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+    private void readBBS(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+    	
+    	ProList proList = new ProList();
+    	CrudHome crud = new CrudHome();
+    	List list = crud.selectPro();
+    	Iterator it = list.iterator();
+		
+    	for(int i = 0; i<5 ;i++){
+    		if(it.hasNext()){
+    			ProItem item = (ProItem) it.next();
+        		
+    			proList.setProList(i, item.getPid());
+    			proList.setNameList(i,item.getName());
+    			proList.setPriceList(i, item.getPrice());
+    			proList.setDateList(i, item.getP_date());
+    			proList.setWriterList(i, item.getId());
+    		}else{
+    			break;
+    		}
+    	}
+    	
+    	proList.setFirstPage(true);
+		
+		int pageNum = readPageNum();
+		proList.setPageNum(pageNum);
+		
+		request.setAttribute("PRO_LIST", proList);
+		RequestDispatcher dis = request.getRequestDispatcher("templat.jsp?BODY=proListView.jsp");
+		
+		dis.forward(request, response);
+    }
+    
+    private void readNextPage(String lastPid,HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
+    	ProList list = new ProList();
+    	CrudHome crud = new CrudHome();
+    	List result = crud.selectProNextPage(Integer.parseInt(lastPid));
+    	Iterator it = result.iterator();
+		
+    	for(int i= 0; i<5;i++){
+    		if(it.hasNext()){
+    			ProItem item = (ProItem)it.next();
+    			
+    			list.setProList(i, item.getPid());
+				list.setNameList(i, item.getName());
+				list.setPriceList(i, item.getPrice());
+				list.setDateList(i, item.getP_date());
+				list.setWriterList(i, item.getId());
+    		}else{
+    			break;
+    		}
+    	}
+    	
+    	if(!it.hasNext()) list.setLastPage(true);
+    	
+    	int pageNum = readPageNum();
+		list.setPageNum(pageNum);
+    	
+    	request.setAttribute("PRO_LIST", list);
+		RequestDispatcher dis = request.getRequestDispatcher("templat.jsp?BODY=proListView.jsp");
+		
+		dis.forward(request, response);    	
+		
+    }
+    
+    private void readPrevPage(String firstPid, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
+    	ProList list = new ProList();
+    	CrudHome crud = new CrudHome();
+    	List result = crud.selectProPrevPage(Integer.parseInt(firstPid));
+    	Iterator it = result.iterator();
+		
+    	for(int i=0; i<5 ; i++){
+    		if(it.hasNext()){
+    			ProItem item = (ProItem)it.next();
+    			
+    			list.setProList(i, item.getPid());
+				list.setNameList(i, item.getName());
+				list.setPriceList(i, item.getPrice());
+				list.setDateList(i, item.getP_date());
+				list.setWriterList(i, item.getId());
+				
+    		}else{
+    			break;
+    		}
+    	}
+    	
+    	int cnt = crud.selectProPrevCount(Integer.parseInt(firstPid));
+    	
+    	if((cnt-5)<5) list.setFirstPage(true);
+    	
+    	int pageNum = readPageNum();
+		list.setPageNum(pageNum);
+		
+		request.setAttribute("PRO_LIST", list);
+		RequestDispatcher dis = request.getRequestDispatcher("templat.jsp?BODY=proListView.jsp");
+		
+		dis.forward(request, response);
+    }
+    
+    private void readPage(String pageNo, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
+    	ProList list = new ProList();
+    	CrudHome crud = new CrudHome();
+    	List result = crud.selectProPage(Integer.parseInt(pageNo));
+    	Iterator it = result.iterator();
+		
+    	for(int i = 0 ; i <5  ;i++){
+    		if(it.hasNext()){
+    			ProItem item = (ProItem)it.next();
+    			
+    			list.setProList(i, item.getPid());
+				list.setNameList(i, item.getName());
+				list.setPriceList(i, item.getPrice());
+				list.setDateList(i, item.getP_date());
+				list.setWriterList(i, item.getId());
+    		}else{
+    			break;
+    		}
+    	}
+    	
+    	if(Integer.parseInt(pageNo)==1) list.setFirstPage(true);
+    	
+    	int cnt = crud.selectProNextCount(Integer.parseInt(pageNo));
+    	if(cnt<6) list.setLastPage(true);
+    	
+    	int pageNum = readPageNum();
+		list.setPageNum(pageNum);	
+		
+		request.setAttribute("PRO_LIST", list);
+		RequestDispatcher dis = request.getRequestDispatcher("templat.jsp?BODY=proListView.jsp");
+		
+		dis.forward(request, response);
+    }
+    
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String lastPid = request.getParameter("LAST_PID");
+		String firstPid = request.getParameter("FIRST_PID");		
+		String pageNo = request.getParameter("PAGE_NO");
+		
+		if(pageNo!=null){
+			readPage(pageNo, request, response);
+		}else if(lastPid !=null){
+			readNextPage(lastPid,request,response);
+		}else if(firstPid!=null){
+			readPrevPage(firstPid, request, response);
+		}else{
+			readBBS(request,response);
+		}
+	}
+
+	private int readPageNum(){
+		
+		int pageNum=0;
+		CrudHome crud = new CrudHome();
+		pageNum = crud.selectProPageNum();		
+		
+		return (pageNum+4)/5;
+	}	
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}
