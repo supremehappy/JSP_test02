@@ -10465,3 +10465,9 @@ Caused by: org.apache.http.client.CircularRedirectException: Circular redirect t
 
 !ENTRY org.eclipse.jface.text 2 0 2017-08-07 17:40:42.763
 !MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.round'
+
+!ENTRY org.eclipse.jface.text 2 0 2017-08-08 10:39:36.962
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.number'
+
+!ENTRY org.eclipse.jface.text 2 0 2017-08-08 10:39:36.962
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.round'

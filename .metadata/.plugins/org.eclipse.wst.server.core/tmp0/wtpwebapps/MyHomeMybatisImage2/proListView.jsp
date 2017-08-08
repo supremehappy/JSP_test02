@@ -65,6 +65,7 @@
 	<input type="hidden" name="id"/>
 	<input type="hidden" name="page"/>
 </form>
+
 <script type="text/javascript">
 function goPage(pageNo){
 	document.sender.action="pro-list";

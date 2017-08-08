@@ -4,7 +4,7 @@
 <mapper namespace="myHomeMapper">
 
 	<sql id="baseColumns">
-		pid,name,price,p_date,content,id
+		pid,group_id,order_no,parent_id,name,price,p_date,content,id,password
 	</sql>
 
 	<select id="selectCart" parameterType="String"
@@ -199,9 +199,75 @@
 				select a.*, rownum rn from
 				(
 					(select * from product_info
-					order by pid desc) a
+					order by group_id desc, order_no asc) a
 				)
 			) where rn between #{startRow} and #{endRow}
 	</select>
 	
+<!--  수정된 product -->
+	<!-- ProductPostServlet -->
+	
+	<!-- re-post max group number -->
+	<select id="selectMaxGroupId" resultType="Integer">
+		select max(group_id) as num from product_info
+	</select>
+	
+	<!--  -->
+	<update id="updateOrderNo" parameterType="model.ProItem">
+		update product_info set order_no = order_no+1
+		where group_id = #{group_id} and order_no >= #{order_no}
+	</update>
+	
+	<select id="selectLastId" parameterType="String" resultType="Integer">
+		select last_id from pid_sequence where table_name = #{name}
+	</select>
+	
+	<insert id="insertLastId" parameterType="model.IdSequence">
+		insert into pid_sequence values(#{name}, #{last_id})
+	</insert>
+	
+	<update id="updateLastId" parameterType="model.IdSequence">
+		update pid_sequence set last_id=#{last_id} 
+		where table_name = #{name}
+	</update>
+	
+	<insert id="insertProInfo" parameterType="model.ProItem">
+		insert into product_info values(#{pid},#{group_id}, #{order_no},#{parent_id},#{name},#{price}, 
+		#{p_date},#{content},#{id},#{password})
+	</insert>
+	
+	<insert id="insertProContent" parameterType="model.ProItem">
+		insert into product_content values(#{pid},#{content})
+	</insert>
+	
+	<!-- 전체조회 -->
+	<select id="selectProInfo" parameterType="Integer" resultType="model.ProItem">
+		select <include refid="baseColumns"/> from product_info
+		where pid = #{pid}
+	</select>
+	
+	<select id="selectProContent" parameterType="Integer" resultType="String">
+		select content from product_content
+		where pid = #{pid}
+	</select>
+	
+<!--  delete -->
+	<delete id="deleteProContent" parameterType="Integer">
+		delete from product_content where pid=#{pid}
+	</delete>
+	
+	<delete id="deleteProInfo" parameterType="Integer">
+		delete from product_info where pid=#{pid}
+	</delete>
+	
+<!-- update -->
+	<update id="updateProContent" parameterType="model.ProItem">
+		update product_content set content = #{content}
+		where pid = #{pid}
+	</update>
+	
+	<update id="updateProInfo" parameterType="model.ProItem">
+		update product_info set name = #{name}, id = #{id}, price = #{price}
+		where pid = #{pid}
+	</update>
 </mapper>

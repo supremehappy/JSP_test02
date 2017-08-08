@@ -32,12 +32,15 @@ public class ImageReadServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
+		
+		System.out.println("ImageReadServlet id : "+id);
+		
 		CrudImage crud = new CrudImage();
 		Writing writing = crud.selectWritingInfo(Integer.parseInt(id));
 		String content = crud.selectWritingContent(Integer.parseInt(id));
-		writing.setContent(content);//±Û ³»¿ë ÀúÀå
+		writing.setContent(content);//ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		request.setAttribute("writing", writing);
-		//ÆäÀÌÁö ÀüÈ¯(read_image.jsp)
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯(read_image.jsp)
 		RequestDispatcher rd = request.getRequestDispatcher(
 				"template.jsp?BODY=read_image.jsp");
 		rd.forward(request, response);
@@ -51,9 +54,9 @@ public class ImageReadServlet extends HttpServlet {
 		CrudImage crud = new CrudImage();
 		Writing writing = crud.selectWritingInfo(Integer.parseInt(id));
 		String content = crud.selectWritingContent(Integer.parseInt(id));
-		writing.setContent(content);//±Û ³»¿ë ÀúÀå
+		writing.setContent(content);//ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		request.setAttribute("writing", writing);
-		//ÆäÀÌÁö ÀüÈ¯(read_image.jsp)
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯(read_image.jsp)
 		RequestDispatcher rd = request.getRequestDispatcher(
 				"template.jsp?BODY=read_image.jsp");
 		rd.forward(request, response);

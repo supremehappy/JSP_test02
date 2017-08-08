@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="imageMapper">
+<!--  -->
+	<sql id="baseColumns">
+		writing_id,register_date,writer_name,email,image_name,password,title
+	</sql>
+<!--  -->
+	<insert id="insertWrtingInfo" parameterType="model.Writing">
+		insert into writing_info values(#{writing_id},#{group_id}, #{order_no},#{parent_id},#{register_date},#{writer_name}, 
+		#{email},#{image_name},#{password},#{title},#{level_no})
+	</insert>
+	
+	<insert id="insertWritingContent" parameterType="model.Writing">
+		insert into writing_content values(#{writing_id},#{content})
+	</insert>
+	
+	<select id="selectLastId" parameterType="String" resultType="Integer">
+		select last_id from id_sequence where table_name = #{name}
+	</select>
+	
+	<update id="updateLastId" parameterType="model.IdSequence">
+		update id_sequence set last_id=#{last_id} 
+		where table_name = #{name}
+	</update>
+	
+	<insert id="insertLastId" parameterType="model.IdSequence">
+		insert into id_sequence values(#{name}, #{last_id})
+	</insert>
+	
+	<select id="selectImageList" resultType="model.Writing">
+		select <include refid="baseColumns"/>
+		 from writing_info order by writing_id desc
+	</select>
+<!-- 부분조회 -->
+	<select id="selectImageListCondition" parameterType="model.Condition"
+		resultType="model.Writing">
+		select <include refid="baseColumns"/>
+		from 
+		(
+			select a.*, rownum rn from
+			(
+				(select * from writing_info
+				order by group_id desc, order_no asc) a
+			)
+		) where rn between #{startRow} and #{endRow}
+	</select>
+<!-- 전체조회 -->
+	<select id="selectWritingInfo" parameterType="Integer" resultType="model.Writing">
+		select <include refid="baseColumns"/> from writing_info
+		where writing_id = #{writing_id}
+	</select>
+	
+	<select id="selectWritingContent" parameterType="Integer" resultType="String">
+		select content from writing_content
+		where writing_id = #{writing_id}
+	</select>
+<!--  delete -->
+	<delete id="deleteWritingContent" parameterType="Integer">
+		delete from writing_content where writing_id=#{writing_id}
+	</delete>
+	
+	<delete id="deleteWritingInfo" parameterType="Integer">
+		delete from writing_info where writing_id=#{writing_id}
+	</delete>
+<!-- update -->
+	<update id="updateWritingContent" parameterType="model.Writing">
+		update writing_content set content = #{content}
+		where writing_id = #{writing_id}
+	</update>
+	
+	<update id="updateWritingInfo" parameterType="model.Writing">
+		update writing_info set writer_name = #{writer_name}, title = #{title}, email = #{email}, image_name = #{image_name}
+		where writing_id = #{writing_id}
+	</update>
+<!-- image page number -->
+	<select id="selectImageCount" resultType="Integer">
+		select count(*) from writing_info
+	</select>
+<!-- re-post max group number -->
+	<select id="selectMaxGroupId" resultType="Integer">
+		select max(group_id) as num from writing_info
+	</select>	
+	
+<!--  -->
+	<update id="updateOrderNo" parameterType="model.Writing">
+		update writing_info set order_no = order_no+1
+		where group_id = #{group_id} and order_no >= #{orer_no}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

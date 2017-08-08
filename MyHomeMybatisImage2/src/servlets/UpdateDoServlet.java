@@ -54,6 +54,7 @@ public class UpdateDoServlet extends HttpServlet {
 				request,path,maxLimit,enctype,
 				new DefaultFileRenamePolicy());
 			String id = multi.getParameter("id");
+			System.out.println("UpdateDoServlet id :"+id);
 			String title = multi.getParameter("title");
 			String name = multi.getParameter("name");
 			String content = multi.getParameter("content");

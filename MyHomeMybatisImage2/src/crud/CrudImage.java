@@ -209,7 +209,27 @@ public class CrudImage {
 		SqlSession session = getConnection().openSession();
 		try{
 			String sql = namespace + ".selectMaxGroupId";
-			int result = session.selectOne(sql);
+			Object result = session.selectOne(sql);
+			
+			if(result == null) return 0;
+			
+			return Integer.parseInt(String.valueOf(result));
+		}finally{
+			session.close();
+		}
+	}
+	
+	//-------------------------------------------------------------------
+	
+	public int updateOrderNo(Writing writing){
+		SqlSession session = getConnection().openSession();
+		try{
+			String sql = namespace + ".updateOrderNo";
+			int result = session.update(sql,writing);
+			
+			if(result>0) session.commit();
+			else session.rollback();
+			
 			return result;
 		}finally{
 			session.close();

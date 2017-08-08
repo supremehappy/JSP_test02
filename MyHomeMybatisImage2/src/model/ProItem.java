@@ -3,12 +3,46 @@ package model;
 public class ProItem {
 
 	private int pid;
+	//-------------------추가
+	private int group_id;
+	private int order_no;
+	private int parent_id;
+	private String password;
+	
+	//----------------------
 	private String name;
 	private int price;
 	private String content;
 	private String id;
 	private String p_date;
 	
+	//-----------------------------------------추가
+	public int getGroup_id() {
+		return group_id;
+	}
+	public void setGroup_id(int group_id) {
+		this.group_id = group_id;
+	}
+	public int getOrder_no() {
+		return order_no;
+	}
+	public void setOrder_no(int order_no) {
+		this.order_no = order_no;
+	}
+	public int getParent_id() {
+		return parent_id;
+	}
+	public void setParent_id(int parent_id) {
+		this.parent_id = parent_id;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	//-------------------------------------------
 	public int getPid() {
 		return pid;
 	}

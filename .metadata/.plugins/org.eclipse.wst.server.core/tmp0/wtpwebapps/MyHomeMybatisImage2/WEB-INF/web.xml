@@ -26,11 +26,11 @@
     <url-pattern>/bbs-post</url-pattern>
   </filter-mapping>
   <filter>
-  	<filter-name>loginProCheck</filter-name>
-  	<filter-class>myhome.LoginCheckFilter</filter-class>
+    <filter-name>loginProCheck</filter-name>
+    <filter-class>myhome.LoginCheckFilter</filter-class>
   </filter>
   <filter-mapping>
-  	<filter-name>loginProCheck</filter-name>
-  	<url-pattern>/pro-post</url-pattern>
-  </filter-mapping>  
+    <filter-name>loginProCheck</filter-name>
+    <url-pattern>/pro-post</url-pattern>
+  </filter-mapping>
 </web-app>

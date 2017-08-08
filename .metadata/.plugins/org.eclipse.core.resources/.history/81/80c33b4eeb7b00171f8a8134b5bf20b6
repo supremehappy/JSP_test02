@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="myHomeMapper">
+
+	<sql id="baseColumns">
+		pid,group_id,order_no,parent_id,name,price,p_date,content,id,password
+	</sql>
+
+	<select id="selectCart" parameterType="String"
+		resultType="model.CartItem">
+		select c.code, c.num, p.name, p.price
+		from cart c, product_info p
+		where c.code = p.pid and c.id = #{id}
+	</select>
+	<update id="updateCart" parameterType="model.CartItem">
+		update cart set num=#{num} where code=#{code} and id=#{id}
+	</update>
+	<delete id="deleteCart" parameterType="model.CartItem">
+		delete from cart where code=#{code} and id=#{id}
+	</delete>
+	<select id="selectMaxSeqnoCart" resultType="Integer">
+		select max(seqno) max_no from cart
+	</select>
+	<insert id="insertCart" parameterType="model.CartItem">
+		insert into cart values(#{seqno},#{code},#{num},#{id})
+	</insert>
+	
+	<!-- login  -->
+	<!-- 조회 값이 하나 이상일경우 빈 생성(resultType="model.UserInfo") -->
+	<select id="selectMember" parameterType="String" resultType="model.UserInfo">
+		select id, password from user_info where id=#{id}
+	</select>
+	
+<!-- bbs -->	
+	<!-- bbs 제일 큰 글번호 -->	
+	<!-- 조회 값이 하나 일경우 빈 생성 없이 가능 -->
+	<select id="selectMaxSeqno" resultType="Integer">
+		select max(seqno) as max_seqno from bbs
+	</select>
+	
+	<!-- bbs 게시글 등록 -->	
+	<insert id="insetBBS" parameterType="model.BBSItem">
+		insert into bbs
+		values(#{seqno},#{title},#{content},#{id},#{bbs_date})
+	</insert>
+	
+	<!-- bbs 게시판 list 처리 -->
+	<select id="selectBBS" resultType="model.BBSItem">
+		select seqno, title, content, id, bbs_date from bbs
+		order by seqno desc
+	</select>	
+	
+	<!-- bbsitemservelt -->
+	<select id="selectBBSItem" parameterType="Integer" resultType="model.BBSItem">
+		select * from bbs where seqno =#{seqno}
+	</select>
+	
+	<!-- bbslistservelt - readPageNum-->
+	<select id="selectPage" resultType="Integer">
+		select count(*) as num from bbs
+	</select>
+	
+	<!-- bbslistservelt -readNextPage -->
+	<select id="selectNextPage" parameterType="Integer" resultType="model.BBSItem">
+		select * from bbs where seqno <![CDATA[<]]> #{seqno}
+		order by seqno desc
+	</select>
+	
+	<!-- bbslistservelt -readPrevPage -->
+	<select id="selectPrevPage" parameterType="Integer" resultType="model.BBSItem">
+		select seqno,title,id,bbs_date from
+		(
+			select seqno,title,id,bbs_date,rownum from
+			(
+				select * from 
+				(
+					select * from bbs where seqno > #{seqno}
+					order by seqno desc
+				)
+				order by seqno
+			)
+			where rownum <![CDATA[ < ]]>=5 order by seqno desc
+		)
+	</select>
+	
+	<select id="selectPrevCount" parameterType="Integer" resultType="Integer">
+		select count(*) as num from bbs where seqno > #{seqno}
+	</select>
+	
+	<!-- bbslistservelt -readPage -->
+	<select id="selectBBSPage" parameterType="Integer" resultType="model.BBSItem">
+		select seqno, title, id, bbs_date from
+		(
+			select seqno, title, id, bbs_date, rownum rn from
+			(
+				select * from bbs order by seqno desc
+			)
+		)
+		where (rn>((#{no}-1)*5)) and
+		(rn <![CDATA[<]]> ((#{no}-1)*5)+6)
+	</select>
+	
+	<select id="selectNextCount" parameterType="Integer" resultType="Integer">
+		select count(*) as num from
+		(
+			select seqno, rownum rn from
+			(
+				select * from bbs order by seqno desc
+			)
+		)
+		where rn>((#{no}-1)*5)
+	</select>
+
+<!-- product  -->
+	<!-- product 제일 큰 글번호 -->	
+	<select id="selectMaxPid" resultType="Integer">
+		select max(pid) as max_no from product_info
+	</select>
+
+	<!-- product 게시글 등록 -->	
+	<insert id="insetPro" parameterType="model.ProItem">
+		insert into product_info
+		values(#{pid},#{name},#{price},#{p_date},#{content},#{id})
+	</insert>
+
+	<!-- 게시판 list 처리 -->
+	<select id="selectPro" resultType="model.ProItem">
+		select pid, name, price, p_date, content, id from product_info
+		order by pid desc
+	</select>
+	
+	<!-- proitemservelt -->
+	<select id="selectProItem" parameterType="Integer" resultType="model.ProItem">
+		select * from product_info where pid =#{pid}
+	</select>
+	
+	<!-- prolistservelt - readPageNum-->
+	<select id="selectProPageNum" resultType="Integer">
+		select count(*) as num from product_info
+	</select>
+	
+	<!-- prolistservelt -readNextPage -->
+	<select id="selectProNextPage" parameterType="Integer" resultType="model.ProItem">
+		select * from product_info where pid <![CDATA[<]]> #{pid}
+		order by pid desc
+	</select>
+	
+	<!-- prolistservelt -readPrevPage -->
+	<select id="selectProPrevPage" parameterType="Integer" resultType="model.ProItem">
+		select pid,title,id,p_date from
+		(
+			select pid,name,price,p_date,id,rownum from
+			(
+				select * from 
+				(
+					select * from product_info where pid > #{pid}
+					order by pid desc
+				)
+				order by pid
+			)
+			where rownum <![CDATA[ < ]]>=5 order by pid desc
+		)
+	</select>
+	
+	<select id="selectProPrevCount" parameterType="Integer" resultType="Integer">
+		select count(*) as num from product_info where pid > #{pid}
+	</select>
+	
+	<!-- prolistservelt -readPage -->
+	<select id="selectProPage" parameterType="Integer" resultType="model.ProItem">
+		select pid,name,price,p_date,id from
+		(
+			select pid,name,price,p_date,id, rownum rn from
+			(
+				select * from product_info order by pid desc
+			)
+		)
+		where (rn>((#{no}-1)*5)) and
+		(rn <![CDATA[<]]> ((#{no}-1)*5)+6)
+	</select>
+	
+	<select id="selectProNextCount" parameterType="Integer" resultType="Integer">
+		select count(*) as num from
+		(
+			select pid, rownum rn from
+			(
+				select * from product_info order by pid desc
+			)
+		)
+		where rn>((#{no}-1)*5)
+	</select>
+	
+	<select id="selectProListCondition" parameterType="model.Condition"
+			resultType="model.ProItem">
+			select <include refid="baseColumns"/>
+			from 
+			(
+				select a.*, rownum rn from
+				(
+					(select * from product_info
+					order by pid desc) a
+				)
+			) where rn between #{startRow} and #{endRow}
+	</select>
+	
+<!--  수정된 product -->
+	<!-- ProductPostServlet -->
+	
+	<!-- re-post max group number -->
+	<select id="selectMaxGroupId" resultType="Integer">
+		select max(group_id) as num from product_info
+	</select>
+	
+	<!--  -->
+	<update id="updateOrderNo" parameterType="model.ProItem">
+		update product_info set order_no = order_no+1
+		where group_id = #{group_id} and order_no >= #{order_no}
+	</update>
+	
+	<select id="selectLastId" parameterType="String" resultType="Integer">
+		select last_id from pid_sequence where table_name = #{name}
+	</select>
+	
+	<insert id="insertLastId" parameterType="model.IdSequence">
+		insert into pid_sequence values(#{name}, #{last_id})
+	</insert>
+	
+	<update id="updateLastId" parameterType="model.IdSequence">
+		update pid_sequence set last_id=#{last_id} 
+		where table_name = #{name}
+	</update>
+	
+	<insert id="insertProInfo" parameterType="model.ProItem">
+		insert into product_info values(#{pid},#{group_id}, #{order_no},#{parent_id},#{name},#{price}, 
+		#{p_date},#{content},#{id},#{password})
+	</insert>
+	
+	<insert id="insertProContent" parameterType="model.ProItem">
+		insert into pro_content values(#{pid},#{content})
+	</insert>
+	
+	<!-- 전체조회 -->
+	<select id="selectProInfo" parameterType="Integer" resultType="model.ProItem">
+		select <include refid="baseColumns"/> from product_info
+		where pid = #{pid}
+	</select>
+	
+	<delete id="deleteProInfo" parameterType="Integer">
+		delete from product_info where pid=#{pid}
+	</delete>
+</mapper>

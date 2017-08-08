@@ -29,12 +29,12 @@ function validate(form){
 
 <form action="write.do" method="post" enctype="multipart/form-data" onSubmit="return validate(this)">
 
-	<c:if test="${! empty writing.groupid }">
-		<input type="hidden" name ="groupid" value="${param.group_id }"/>
+	<c:if test="${! empty writing.group_id }">
+		<input type="hidden" name ="groupid" value="${param.groupid }"/>
 	</c:if>
 	
-	<c:if test="${! empty writing.parentid }">
-		<input type="hidden" name ="parentid" value="${param.paren_tid }"/>
+	<c:if test="${! empty writing.parent_id }">
+		<input type="hidden" name ="parentid" value="${param.parentid }"/>
 	</c:if>
 
 	<input type="hidden" name="orderno" value="${param.order_no+1 }" />
@@ -67,18 +67,3 @@ function validate(form){
 </form>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

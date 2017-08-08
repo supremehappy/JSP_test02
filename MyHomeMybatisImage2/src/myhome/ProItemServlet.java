@@ -37,12 +37,16 @@ public class ProItemServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String pid = request.getParameter("PID");
+		String pid = request.getParameter("id");
 		CrudHome crud = new CrudHome();
-		ProItem item = crud.selectProItem(Integer.parseInt(pid));
+		ProItem pro = crud.selectProInfo(Integer.parseInt(pid));
+		String content = crud.selectProContent(Integer.parseInt(pid));
 		
-		request.setAttribute("PRO_ITEM", item);
-		RequestDispatcher dis = request.getRequestDispatcher("templat.jsp?BODY=ProContentView.jsp");
+		pro.setContent(content);
+		request.setAttribute("pro", pro);		
+		request.setAttribute("PRO_ITEM", pro);
+		
+		RequestDispatcher dis = request.getRequestDispatcher("template.jsp?BODY=ProContentView.jsp");
 		
 		dis.forward(request, response);
 	}
@@ -51,8 +55,19 @@ public class ProItemServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		
+		String pid = request.getParameter("id");
+		CrudHome crud = new CrudHome();
+		ProItem pro = crud.selectProInfo(Integer.parseInt(pid));
+		String content = crud.selectProContent(Integer.parseInt(pid));
+		
+		pro.setContent(content);
+		request.setAttribute("pro", pro);		
+		request.setAttribute("PRO_ITEM", pro);
+		
+		RequestDispatcher dis = request.getRequestDispatcher("template.jsp?BODY=ProContentView.jsp");
+		
+		dis.forward(request, response);
 	}
 
 }

@@ -12,6 +12,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import model.BBSItem;
 import model.CartItem;
 import model.Condition;
+import model.IdSequence;
 import model.UserInfo;
 import model.Writing;
 import model.ProItem;
@@ -238,131 +239,299 @@ public class CrudHome {
 		}
 		
 	//--------------------------------------------------------------------------------product	
-		// 페이지 번호 처리하기 위한 보조 메소드
-		public Integer selectProNextCount(int pid){
-			SqlSession sqlSession = getConnection().openSession();
-			
-			try{
-				String sql=namespace+".selectProNextCount";
-				int result = sqlSession.selectOne(sql,pid);
-				return result;
-				
-			}finally{
-				sqlSession.close();
-			}
-		}
+	// 페이지 번호 처리하기 위한 보조 메소드
+	public Integer selectProNextCount(int pid){
+		SqlSession sqlSession = getConnection().openSession();
 		
-		// 페이지 번호 처리 하는 메소드
-		public List<ProItem> selectProPage(int pid){
-			SqlSession sqlSession = getConnection().openSession();
+		try{
+			String sql=namespace+".selectProNextCount";
+			int result = sqlSession.selectOne(sql,pid);
+			return result;
 			
-			try{
-				String sql=namespace+".selectProPage";
-				List<ProItem> list = sqlSession.selectList(sql,pid);
-				return list;
-				
-			}finally{
-				sqlSession.close();
-			}
+		}finally{
+			sqlSession.close();
 		}
-		
-		// 이전페이지 처리하기 위한 보조 메소드
-		public Integer selectProPrevCount(int pid){
-			SqlSession sqlSession = getConnection().openSession();
-			
-			try{
-				String sql=namespace+".selectProPrevCount";
-				int result = sqlSession.selectOne(sql,pid);
-				return result;
-				
-			}finally{
-				sqlSession.close();
-			}
-		}
-		
-		// 이전페이지 처리하는 메소드
-		public List<ProItem> selectProPrevPage(int pid){
-			SqlSession sqlSession = getConnection().openSession();
-			
-			try{
-				String sql=namespace+".selectProPrevPage";
-				List<ProItem> list = sqlSession.selectList(sql,pid);
-				return list;
-				
-			}finally{
-				sqlSession.close();
-			}
-		}
-		
-		// 다음페이지 처리하는 메소드
-		public List<ProItem> selectProNextPage(int pid){
-			SqlSession sqlSession = getConnection().openSession();
-			
-			try{
-				String sql=namespace+".selectProNextPage";
-				List<ProItem> list = sqlSession.selectList(sql,pid);
-				return list;
-				
-			}finally{
-				sqlSession.close();
-			}
-		}
-		
-		// 페이지 처리하는 메소드
-		public Integer selectProPageNum(){
-			SqlSession sqlSession = getConnection().openSession();
-			
-			try{
-				String sql=namespace+".selectProPageNum";
-				Integer num = sqlSession.selectOne(sql);
-				return num;
-				
-			}finally{
-				sqlSession.close();
-			}
-		}
-		
-		// 글 내용 보여주기 위한 메소드
-		public ProItem selectProItem(Integer pid){
-			SqlSession sqlSession = getConnection().openSession();
-			
-			try{
-				String sql=namespace+".selectProItem";
-				ProItem item = sqlSession.selectOne(sql, pid);
-				return item;
-				
-			}finally{
-				sqlSession.close();
-			}
-		}
-		
-		// 게시글 리스트 처리 하기 위한 메소드
-		public List<ProItem> selectPro(){
-			SqlSession sqlSession = getConnection().openSession();
-			
-			try{
-				String sql=namespace+".selectPro";
-				List<ProItem> list=sqlSession.selectList(sql);
-				return list;
-				
-			}finally{
-				sqlSession.close();
-			}
-		}
-		
-		public List<ProItem> selectProListCondition(Condition c){ // 부분 조회
-			SqlSession session = getConnection().openSession();
-			try{
-				String sql = namespace + ".selectProListCondition";
-				List<ProItem> result = session.selectList(sql,c);
-				return result;
-			}finally{
-				session.close();
-			}
-		}
+	}
 	
+	// 페이지 번호 처리 하는 메소드
+	public List<ProItem> selectProPage(int pid){
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql=namespace+".selectProPage";
+			List<ProItem> list = sqlSession.selectList(sql,pid);
+			return list;
+			
+		}finally{
+			sqlSession.close();
+		}
+	}
+	
+	// 이전페이지 처리하기 위한 보조 메소드
+	public Integer selectProPrevCount(int pid){
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql=namespace+".selectProPrevCount";
+			int result = sqlSession.selectOne(sql,pid);
+			return result;
+			
+		}finally{
+			sqlSession.close();
+		}
+	}
+	
+	// 이전페이지 처리하는 메소드
+	public List<ProItem> selectProPrevPage(int pid){
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql=namespace+".selectProPrevPage";
+			List<ProItem> list = sqlSession.selectList(sql,pid);
+			return list;
+			
+		}finally{
+			sqlSession.close();
+		}
+	}
+	
+	// 다음페이지 처리하는 메소드
+	public List<ProItem> selectProNextPage(int pid){
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql=namespace+".selectProNextPage";
+			List<ProItem> list = sqlSession.selectList(sql,pid);
+			return list;
+			
+		}finally{
+			sqlSession.close();
+		}
+	}
+	
+	// 페이지 처리하는 메소드
+	public Integer selectProPageNum(){
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql=namespace+".selectProPageNum";
+			Integer num = sqlSession.selectOne(sql);
+			return num;
+			
+		}finally{
+			sqlSession.close();
+		}
+	}
+	
+	// 글 내용 보여주기 위한 메소드
+	public ProItem selectProItem(Integer pid){
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql=namespace+".selectProItem";
+			ProItem item = sqlSession.selectOne(sql, pid);
+			return item;
+			
+		}finally{
+			sqlSession.close();
+		}
+	}
+	
+	// 게시글 리스트 처리 하기 위한 메소드
+	public List<ProItem> selectPro(){
+		SqlSession sqlSession = getConnection().openSession();
+		
+		try{
+			String sql=namespace+".selectPro";
+			List<ProItem> list=sqlSession.selectList(sql);
+			return list;
+			
+		}finally{
+			sqlSession.close();
+		}
+	}
+	//------------------------------------------------------------------
+	public List<ProItem> selectProListCondition(Condition c){ // 부분 조회
+		SqlSession session = getConnection().openSession();
+		try{
+			String sql = namespace + ".selectProListCondition";
+			List<ProItem> result = session.selectList(sql,c);
+			return result;
+		}finally{
+			session.close();
+		}
+	}
+	//------------------------------------------------------------------ 수정된 product
+	
+	public int selectMaxGroupId(){
+		SqlSession session = getConnection().openSession();
+		try{
+			String sql = namespace + ".selectMaxGroupId";
+			Object result = session.selectOne(sql);
+			
+			if(result == null) return 0;
+			
+			return Integer.parseInt(String.valueOf(result));
+		}finally{
+			session.close();
+		}
+	}
+	
+	public int updateOrderNo(ProItem pro){
+		SqlSession session = getConnection().openSession();
+		try{
+			String sql = namespace + ".updateOrderNo";
+			int result = session.update(sql,pro);
+			
+			if(result>0) session.commit();
+			else session.rollback();
+			
+			return result;
+		}finally{
+			session.close();
+		}
+	}
+	
+	public Integer selectLastId(String name){
+		SqlSession session = getConnection().openSession();
+		try{
+			String sql = namespace + ".selectLastId";
+			Object result = session.selectOne(sql, name);
+			if(result == null) return 0;
+			return Integer.parseInt(String.valueOf(result));
+		}finally{
+			session.close();
+		}
+	}
+	
+	public Integer insertLastId(IdSequence id){
+		SqlSession session = getConnection().openSession();
+		try{
+			String sql = namespace + ".insertLastId";
+			int result = session.insert(sql, id);
+			if(result > 0) session.commit();
+			else session.rollback();
+			return result;
+		}finally{
+			session.close();
+		}
+	}
+	
+	public Integer updateLastId(IdSequence id){
+		SqlSession session = getConnection().openSession();
+		try{
+			String sql = namespace + ".updateLastId";
+			int result = session.update(sql, id);
+			if(result > 0) session.commit();
+			else session.rollback();
+			return result;
+		}finally{
+			session.close();
+		}
+	}
+	
+	public Integer insertProInfo(ProItem pro){
+		SqlSession session = getConnection().openSession();
+		try{
+			String sql = namespace + ".insertProInfo";
+			int result = session.insert(sql, pro);
+			if(result > 0) session.commit();
+			else session.rollback();
+			return result;
+		}finally{
+			session.close();
+		}
+	}
+	
+	public int insertProContent(ProItem pro){
+		SqlSession session = getConnection().openSession();
+		try{
+			String sql = namespace + ".insertProContent";
+			int result = session.insert(sql, pro);
+			if(result > 0) session.commit();
+			else session.rollback();
+			return result;
+		}finally{
+			session.close();
+		}
+	}
+	
+	public ProItem selectProInfo(Integer pid){
+		SqlSession session = getConnection().openSession();
+		try{
+			String sql = namespace + ".selectProInfo";
+			ProItem result = session.selectOne(sql, pid);
+			return result;
+		}finally{
+			session.close();
+		}
+	}
+	
+	public int deleteProInfo(Integer pid){
+		SqlSession session = getConnection().openSession();
+		try{
+			String sql = namespace + ".deleteProInfo";
+			int result = session.delete(sql,pid);
+			if(result > 0) session.commit();
+			else session.rollback();
+			return result;
+		}finally{
+			session.close();
+		}
+	}
+	
+	public int deleteProContent(Integer seqno){
+		SqlSession session = getConnection().openSession();
+		try{
+			String sql = namespace + ".deleteProContent";
+			int result = session.delete(sql,seqno);
+			if(result > 0) session.commit();
+			else session.rollback();
+			return result;
+		}finally{
+			session.close();
+		}
+	}
+	
+	public String selectProContent(Integer pid){
+		SqlSession session = getConnection().openSession();
+		try{
+			String sql = namespace + ".selectProContent";
+			String result = session.selectOne(sql, pid);
+			return result;
+		}finally{
+			session.close();
+		}
+	}
+	
+	public int updateProInfo(ProItem pro){
+		SqlSession session = getConnection().openSession();
+		try{
+			String sql = namespace + ".updateProInfo";
+			int result = session.update(sql,pro);
+			if(result > 0) session.commit();
+			else session.rollback();
+			return result;
+		}finally{
+			session.close();
+		}
+	}
+	
+	public int updateProContent(ProItem pro){
+		SqlSession session = getConnection().openSession();
+		try{
+			String sql = namespace + ".updateProContent";
+			int result = session.update(sql,pro);
+			if(result > 0) session.commit();
+			else session.rollback();
+			return result;
+		}finally{
+			session.close();
+		}
+	}
+	//------------------------------------------------------------------
 	private SqlSessionFactory getConnection(){
-		String resource="mybatis-config.xml";//ȯ�漳������ �̸�
+		String resource="mybatis-config.xml";//
 		InputStream inputStream=null;
 		try{
 			inputStream=Resources.getResourceAsStream(resource);
