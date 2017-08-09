@@ -8,14 +8,14 @@
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="euc-kr"/>
-			<item value="EUC-KR"/>
-			<item value="insertWritingContent"/>
-			<item value="#"/>
-			<item value="startPage"/>
-			<item value="&lt;Context"/>
-			<item value="selectImageList"/>
-			<item value="multipart"/>
+			<item value="selectImageListCondition"/>
+			<item value="insertWrtingInfo"/>
+			<item value="insertWritingInfo"/>
+			<item value="insertProInfo"/>
+			<item value="PID"/>
+			<item value="selectProInfo"/>
+			<item value="insertProContent"/>
+			<item value="updateWritingInfo"/>
 		</list>
 		<list key="replacehistory">
 			<item value="UTF-8"/>
@@ -27,7 +27,7 @@
 		<item value="271" key="DIALOG_WIDTH"/>
 		<item value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕" key="DIALOG_FONT_NAME"/>
 		<item value="393" key="DIALOG_HEIGHT"/>
-		<item value="1363" key="DIALOG_X_ORIGIN"/>
-		<item value="123" key="DIALOG_Y_ORIGIN"/>
+		<item value="962" key="DIALOG_X_ORIGIN"/>
+		<item value="298" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>
